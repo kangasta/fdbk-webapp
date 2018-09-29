@@ -1,7 +1,9 @@
 from datetime import datetime
 from pymongo import MongoClient
 
-class MongoConnection(object):
+from DBConnection import DBConnection
+
+class MongoConnection(DBConnection):
 	def __init__(self, mongo_url, db="feedback"):
 		self.__mongo_url = mongo_url
 		self.__db = db
