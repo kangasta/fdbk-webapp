@@ -10,3 +10,5 @@ class DBConnection(object):
 
 	def getData(self, topic):
 		raise NotImplementedError("Functionality not implemented by selected DB connection")
+
+ConnectionClass = DBConnection

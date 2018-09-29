@@ -4,7 +4,7 @@ from pymongo import MongoClient
 from DBConnection import DBConnection
 
 class MongoConnection(DBConnection):
-	def __init__(self, mongo_url, db="feedback"):
+	def __init__(self, mongo_url, db="default_db"):
 		self.__mongo_url = mongo_url
 		self.__db = db
 
@@ -79,8 +79,8 @@ class MongoConnection(DBConnection):
 			return ret
 
 if __name__ == "__main__":
-	MG = MongoConnection("172.20.0.3")
-	
+	MG = MongoConnection("172.20.0.2")
+
 	print(MG.getTopics())
 	try:
 		print(MG.getData("IPA"))
@@ -88,11 +88,12 @@ if __name__ == "__main__":
 		print(e)
 
 	MG.addTopic("IPA", "Taste review of this cool IPA!", ["stars","text"], ["stars", None])
-	
+
 	MG.addData("IPA", [5, "Taste is awesome!"])
 	MG.addData("IPA", [3, "Taste is average."])
 	MG.addData("IPA", [2, "Taste is meh."])
-	
+
 	print(MG.getTopics())
 	print(MG.getData("IPA"))
-	
+
+ConnectionClass = MongoConnection
