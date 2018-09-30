@@ -17,10 +17,11 @@ config = {
 		"addData",
 		"addTopic",
 		"getData",
-		"getTopics"
+		"getTopics",
+		"getTopic"
 	],
 	"AddTokens": ["cat", "dog"],
-	"ServeCWD": False
+	"ServeCWD": True
 }
 
 DBConnectionMod = import_module(config["DBConnection"])
@@ -75,6 +76,12 @@ def getTopics():
 	if "getTopics" not in config["AllowedActions"]:
 		abort(403)
 	return jsonify(DBConnection.getTopics())
+
+@app.route('/get/topic/<topic>', methods=["GET"])
+def getTopic(topic):
+	if "getTopic" not in config["AllowedActions"]:
+		abort(403)
+	return jsonify(DBConnection.getTopic(topic))
 
 @app.route('/get/data/<topic>', methods=["GET"])
 def getData(topic):

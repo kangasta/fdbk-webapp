@@ -8,6 +8,9 @@ class DBConnection(object):
 	def getTopics(self):
 		raise NotImplementedError("Functionality not implemented by selected DB connection")
 
+	def getTopic(self, topic):
+		raise NotImplementedError("Functionality not implemented by selected DB connection")
+
 	def getData(self, topic):
 		raise NotImplementedError("Functionality not implemented by selected DB connection")
 

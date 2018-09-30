@@ -60,6 +60,22 @@ class MongoConnection(DBConnection):
 				})
 			return ret
 
+	def getTopic(self, topic):
+		with MongoClient(self.__mongo_url) as client:
+			db = client[self.__db]
+
+			topics = db["topics"].find({"topic": topic})
+			if topics.count() < 1:
+				raise KeyError("Topic '" + topic + "' not found from database '" + self.__db + "'")
+			topic = topics[0]
+
+			return {
+				"topic": topic["topic"],
+				"description": topic["description"],
+				"fields": topic["fields"],
+				"units": topic["units"]
+			}
+
 	def getData(self, topic):
 		with MongoClient(self.__mongo_url) as client:
 			db = client[self.__db]
