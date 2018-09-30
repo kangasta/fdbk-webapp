@@ -6,7 +6,7 @@ class Form extends Component {
 		super(props);
 
 		this.state = {
-			"stars": undefined,
+			"stars": null,
 			"text": ""
 		};
 
