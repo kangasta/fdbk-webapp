@@ -69,8 +69,11 @@ class Form extends Component {
 			}
 		})
 		// TODO: should chacnge api to return JSON later
-		//.then(() => res.json())
-		.then(() => {
+		.then((response) => response.json())
+		.then((response_json) => {
+			if (response_json.hasOwnProperty('error') && response_json.error) {
+				throw new Error(response_json.error);
+			}
 			this.setState({
 				"view": {
 					"success": "Data submitted successfully"
