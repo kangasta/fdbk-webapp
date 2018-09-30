@@ -1,7 +1,6 @@
-from flask import Flask, abort, jsonify, request, Response, send_from_directory
-#from flask import Flask, jsonify, request, send_file, send_from_directory
+from flask import Flask, jsonify, request, send_from_directory
 from importlib import import_module
-from logging import warning as debug
+
 import argparse
 import os
 import requests
@@ -24,6 +23,14 @@ config = {
 	"ServeCWD": True
 }
 
+InvalidTokenJSON = {
+	"error": "Token not recognized"
+}
+
+ActionNotAllowedJSON = {
+	"error": "Action not allowed"
+}
+
 DBConnectionMod = import_module(config["DBConnection"])
 DBConnection = DBConnectionMod.ConnectionClass(*(config["DBParameters"]))
 
@@ -37,61 +44,73 @@ if config["ServeCWD"]:
 @app.route('/add/topic', methods=["POST"])
 def addTopic():
 	if "addTopic" not in config["AllowedActions"]:
-		abort(403)
-	if config["AddTokens"]:
-		try:
-			if request.args["token"] not in config["AddTokens"]:
-				# Invalid token given
-				abort(403)
-		except:
-			# No token given
-			abort(403)
+		return jsonify(ActionNotAllowedJSON), 403
+	if config["AddTokens"] and ("token" not in request.args or request.args["token"] not in config["AddTokens"]):
+		return jsonify(InvalidTokenJSON), 403
 	input = request.get_json()
 	try:
 		DBConnection.addTopic(input["topic"], input["description"], input["fields"], input["units"])
-	except KeyError:
+	except KeyError as e:
 		# Field not available in input data
-		abort(400)
-	return Response(status=200)
+		return jsonify({
+			"error": str(e)
+		}), 404
+	return jsonify({
+		"success": "Data successfully added to DB"
+	})
 
 @app.route('/add/data/<topic>', methods=["POST"])
 def addData(topic):
 	if "addData" not in config["AllowedActions"]:
-		abort(403)
+		return jsonify(ActionNotAllowedJSON), 403
 	if config["AddTokens"] and ("token" not in request.args or request.args["token"] not in config["AddTokens"]):
-			abort(403)
+		return jsonify(InvalidTokenJSON), 403
 	input = request.get_json()
 	try:
 		DBConnection.addData(topic, input)
-	except KeyError:
+	except KeyError as e:
 		# Topic not defined
-		abort(404)
-	except ValueError:
+		return jsonify({
+			"error": str(e)
+		}), 404
+	except ValueError as e:
 		# Fields do not match with topic
-		abort(400)
-	return Response(status=200)
+		return jsonify({
+			"error": str(e)
+		}), 400
+	return jsonify({
+		"success": "Data successfully added to DB"
+	})
 
 @app.route('/get/topics', methods=["GET"])
 def getTopics():
 	if "getTopics" not in config["AllowedActions"]:
-		abort(403)
+		return jsonify(ActionNotAllowedJSON), 403
 	return jsonify(DBConnection.getTopics())
 
 @app.route('/get/topic/<topic>', methods=["GET"])
 def getTopic(topic):
 	if "getTopic" not in config["AllowedActions"]:
-		abort(403)
-	return jsonify(DBConnection.getTopic(topic))
+		return jsonify(ActionNotAllowedJSON), 403
+	try:
+		topic_json = DBConnection.getTopic(topic)
+		return jsonify(topic_json)
+	except KeyError as e:
+		return jsonify({
+			"error": str(e)
+		}), 404
 
 @app.route('/get/data/<topic>', methods=["GET"])
 def getData(topic):
 	if "getData" not in config["AllowedActions"]:
-		abort(403)
+		return jsonify(ActionNotAllowedJSON), 403
 	try:
 		data = DBConnection.getData(topic)
 		return jsonify(data)
-	except KeyError:
-		abort(404)
+	except KeyError as e:
+		return jsonify({
+			"error": str(e)
+		}), 404
 
 if __name__ =='__main__':
 	parser = argparse.ArgumentParser()
