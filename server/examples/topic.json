@@ -1,0 +1,12 @@
+{
+  "topic":"APA",
+  "description": "Öl",
+  "fields": [
+    "stars",
+    "text"
+  ],
+  "units": [
+    "stars",
+    null
+  ]
+}
