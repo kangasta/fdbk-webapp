@@ -19,7 +19,8 @@ config = {
 		"getData",
 		"getTopics"
 	],
-	"AddTokens": ["cat", "dog"]
+	"AddTokens": ["cat", "dog"],
+	"ServeCWD": False
 }
 
 DBConnectionMod = import_module(config["DBConnection"])
@@ -27,9 +28,10 @@ DBConnection = DBConnectionMod.ConnectionClass(*(config["DBParameters"]))
 
 app = Flask(__name__)
 
-#@app.route('/')
-#def index():
-#	return send_from_directory('.', 'index.html')
+if config["ServeCWD"]:
+	@app.route('/')
+	def index():
+		return send_from_directory('.', 'index.html')
 
 @app.route('/add/topic', methods=["POST"])
 def addTopic():
