@@ -30,15 +30,17 @@ class MongoConnection(DBConnection):
 				raise KeyError("Topic '" + topic + "' not found from database '" + self.__db + "'")
 			fields = topics[0]["fields"]
 			if len(fields) != len(values):
-				raise ValueError("Given values do not match fields defined for topic")
+				raise ValueError("The number of given values does not match with the number of fields defined for topic")
 
 			# TODO: validate to match topic fields
 			data = {
 				"topic": topic,
 				"timestamp": datetime.utcnow()
 			}
-			for i, field in enumerate(fields):
-				data[field] = values[i]
+			for field in fields:
+				if field not in values.keys():
+					raise ValueError("Value for field '" + field + "' not present in input data")
+				data[field] = values[field]
 
 			db[topic].insert(data)
 
@@ -78,8 +80,10 @@ class MongoConnection(DBConnection):
 					ret[-1][field] = d[field]
 			return ret
 
+ConnectionClass = MongoConnection
+
 if __name__ == "__main__":
-	MG = MongoConnection("172.20.0.2")
+	MG = MongoConnection("172.20.0.3", "feedback")
 
 	print(MG.getTopics())
 	try:
@@ -89,11 +93,13 @@ if __name__ == "__main__":
 
 	MG.addTopic("IPA", "Taste review of this cool IPA!", ["stars","text"], ["stars", None])
 
-	MG.addData("IPA", [5, "Taste is awesome!"])
-	MG.addData("IPA", [3, "Taste is average."])
-	MG.addData("IPA", [2, "Taste is meh."])
+	try:
+		MG.addData("IPA", {"polarity": +1, "text": "Taste is awesome!"})
+	except ValueError as e:
+		print(e)
+	MG.addData("IPA", {"stars": 5, "text": "Taste is awesome!"})
+	MG.addData("IPA", {"stars": 3, "text": "Taste is average."})
+	MG.addData("IPA", {"stars": 2, "text": "Taste is meh."})
 
 	print(MG.getTopics())
 	print(MG.getData("IPA"))
-
-ConnectionClass = MongoConnection
