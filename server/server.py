@@ -101,4 +101,10 @@ if __name__ =='__main__':
 		type=int)
 	args = parser.parse_args()
 
+	# TODO: This is for initial demo, please remove later
+	try:
+		DBConnection.addTopic("IPA", "Taste review of this cool IPA!", ["stars","text"], ["stars", None])
+	except KeyError:
+		pass
+
 	app.run(use_reloader=True, host='0.0.0.0', port=args.port, threaded=True, debug=True)
