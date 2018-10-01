@@ -2,7 +2,7 @@ class DBConnection(object):
 	'''Base class for DB connections.
 	'''
 
-	def addTopic(self, topic, description="", fields=["number"], units=[None]):
+	def addTopic(self, topic, description="", fields=[], units=[]):
 		'''Adds new topic to DB.
 
 		Args:
