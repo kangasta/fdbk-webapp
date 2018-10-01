@@ -65,14 +65,25 @@ def addTopic():
 		return jsonify(ActionNotAllowedJSON), 403
 	if config["AddTokens"] and ("token" not in request.args or request.args["token"] not in config["AddTokens"]):
 		return jsonify(InvalidTokenJSON), 403
-	input = request.get_json()
+	json_in = request.get_json()
+
+	topic = json_in.pop("topic", None)
+	if not topic:
+		return jsonify({
+			"error": "No 'topic' field in input data"
+		}), 404
+
 	try:
-		DBConnection.addTopic(input["topic"], input["description"], input["fields"], input["units"])
+		DBConnection.addTopic(topic, **json_in)
 	except KeyError as e:
 		# Field not available in input data
 		return jsonify({
 			"error": str(e)
 		}), 404
+	except TypeError as e:
+		return jsonify({
+			"error": str(e)
+		}), 400
 	return jsonify({
 		"success": "Data successfully added to DB"
 	})

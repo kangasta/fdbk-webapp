@@ -1,8 +1,16 @@
 class DBConnection(object):
 	'''Base class for DB connections.
 	'''
+	TOPIC_FIELDS = [
+		"topic",
+		"description",
+		"fields",
+		"units",
+		"summary",
+		"visualization"
+	]
 
-	def addTopic(self, topic, description="", fields=[], units=[]):
+	def addTopic(self, topic, description="", fields=[], units=[], summary=[], visualization=[]):
 		'''Adds new topic to DB.
 
 		Args:
@@ -10,6 +18,8 @@ class DBConnection(object):
 			description: Description of the topic.
 			fields: List of data field names included in the topic.
 			units: List of units for corresponding field.
+			summary: List of summary instructions for corresponding fields.
+			visualization: List of visualization instructions for corresponding fields.
 
 		Returns:
 			None
