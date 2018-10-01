@@ -18,5 +18,6 @@ RUN apk add nodejs npm && \
 	apk del nodejs npm;
 
 WORKDIR /app/web
+EXPOSE 3030
 ENTRYPOINT [ "python", "server.py" ]
 CMD [ "-p", "3030" ]

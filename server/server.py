@@ -21,7 +21,8 @@ config = {
 		"database",
 		"feedback",
 		mongo_user,
-		mongo_pass
+		mongo_pass,
+		"admin"
 	],
 	"AllowedActions": [
 		"addData",

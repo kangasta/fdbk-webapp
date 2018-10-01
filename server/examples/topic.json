@@ -1,6 +1,6 @@
 {
   "topic":"APA",
-  "description": "Öl",
+  "description": "Taste review for the APA served in todays tasting.",
   "fields": [
     "stars",
     "text"
