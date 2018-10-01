@@ -4,12 +4,14 @@ from pymongo import MongoClient
 from DBConnection import DBConnection
 
 class MongoConnection(DBConnection):
-	def __init__(self, mongo_url, db="default_db"):
+	def __init__(self, mongo_url, db="default_db", username=None, password=None):
 		self.__mongo_url = mongo_url
+		self.__username = username
+		self.__password = password
 		self.__db = db
 
 	def addTopic(self, topic, description="", fields=["number"], units=[None]):
-		with MongoClient(self.__mongo_url) as client:
+		with MongoClient(self.__mongo_url, username=self.__username, password=self.__password) as client:
 			db = client[self.__db]
 
 			if db["topics"].find({"topic": topic}).count() > 0 or topic in db.list_collection_names():
@@ -23,7 +25,7 @@ class MongoConnection(DBConnection):
 			})
 
 	def addData(self, topic, values):
-		with MongoClient(self.__mongo_url) as client:
+		with MongoClient(self.__mongo_url, username=self.__username, password=self.__password) as client:
 			db = client[self.__db]
 			topics = db["topics"].find({"topic": topic})
 			if topics.count() != 1:
@@ -45,7 +47,7 @@ class MongoConnection(DBConnection):
 			db[topic].insert(data)
 
 	def getTopics(self):
-		with MongoClient(self.__mongo_url) as client:
+		with MongoClient(self.__mongo_url, username=self.__username, password=self.__password) as client:
 			db = client[self.__db]
 
 			topics = db["topics"].find()
@@ -61,7 +63,7 @@ class MongoConnection(DBConnection):
 			return ret
 
 	def getTopic(self, topic):
-		with MongoClient(self.__mongo_url) as client:
+		with MongoClient(self.__mongo_url, username=self.__username, password=self.__password) as client:
 			db = client[self.__db]
 
 			topics = db["topics"].find({"topic": topic})
@@ -77,7 +79,7 @@ class MongoConnection(DBConnection):
 			}
 
 	def getData(self, topic):
-		with MongoClient(self.__mongo_url) as client:
+		with MongoClient(self.__mongo_url, username=self.__username, password=self.__password) as client:
 			db = client[self.__db]
 
 			topics = db["topics"].find({"topic": topic})

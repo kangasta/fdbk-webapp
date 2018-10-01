@@ -6,11 +6,22 @@ import os
 import requests
 import uuid
 
+# TODO: This is for initial demo, please remove later
+try:
+	mongo_user = os.environ["MONGO_USERNAME"]
+	mongo_pass = os.environ["MONGO_PASSWORD"]
+except KeyError:
+	mongo_user = None
+	mongo_pass = None
+
+# TODO: This is for initial demo, move to JSON file later
 config = {
 	"DBConnection": "MongoConnection",
 	"DBParameters": [
 		"database",
-		"feedback"
+		"feedback",
+		mongo_user,
+		mongo_pass
 	],
 	"AllowedActions": [
 		"addData",
