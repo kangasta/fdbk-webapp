@@ -14,6 +14,12 @@ except KeyError:
 	mongo_user = None
 	mongo_pass = None
 
+# TODO: This is for initial demo, please remove later
+try:
+	mongo_auth_db = os.environ["MONGO_AUTH_DB"]
+except KeyError:
+	mongo_auth_db = "admin"
+
 # TODO: This is for initial demo, move to JSON file later
 config = {
 	"DBConnection": "MongoConnection",
@@ -22,7 +28,7 @@ config = {
 		"feedback",
 		mongo_user,
 		mongo_pass,
-		"admin"
+		mongo_auth_db
 	],
 	"AllowedActions": [
 		"addData",
