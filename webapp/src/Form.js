@@ -6,10 +6,13 @@ class Form extends Component {
 	constructor(props) {
 		super(props);
 
+		const params = new URLSearchParams(document.location.href.match(/\?.*/)[0]);
+		const token = params.get("token") || "";
+
 		this.state = {
 			"stars": null,
 			"text": "",
-			"token": "",
+			"token": token,
 			"view": {
 				"loading": "Waiting for feedback topic data from server"
 			}
@@ -138,9 +141,14 @@ class Form extends Component {
 				<h2>Text</h2>
 				<textarea name="text" cols="50" onChange={this.textOnChange}></textarea>
 				</div>
-				<div className="Stars">
+				<div className="Token">
 				<h2>Pre-shared token</h2>
-				<input type="text" name="token" cols="50" onChange={this.tokenOnChange}></input>
+				<input
+					type="text"
+					name="token"
+					onChange={this.tokenOnChange}
+					value={this.state.token}
+				/>
 				</div>
 				<button onClick={this.submitOnClick}>Submit</button>
 				<p>{JSON.stringify(this.state, null, 2)}</p>
