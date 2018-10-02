@@ -8,7 +8,7 @@ class DictConnection(DBConnection):
 			"topics": []
 		}
 
-	def addTopic(self, topic, description="", fields=[], units=[], summary=[], visualization=[]):
+	def addTopic(self, topic, description="", fields=[], units=[], summary=[], visualization=[], allow_api_submissions=True):
 		if topic in (topic_d["topic"] for topic_d in self.__dict["topics"]):
 			raise KeyError("Topic '" + topic + "' already exists in database")
 
@@ -18,7 +18,8 @@ class DictConnection(DBConnection):
 			"fields": fields,
 			"units": units,
 			"summary": summary,
-			"visualization": visualization
+			"visualization": visualization,
+			"allow_api_submissions": allow_api_submissions
 		})
 		self.__dict[topic] = []
 

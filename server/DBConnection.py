@@ -7,10 +7,11 @@ class DBConnection(object):
 		"fields",
 		"units",
 		"summary",
-		"visualization"
+		"visualization",
+		"allow_api_submissions"
 	]
 
-	def addTopic(self, topic, description="", fields=[], units=[], summary=[], visualization=[]):
+	def addTopic(self, topic, description="", fields=[], units=[], summary=[], visualization=[], allow_api_submissions=True):
 		'''Adds new topic to DB.
 
 		Args:
@@ -20,6 +21,7 @@ class DBConnection(object):
 			units: List of units for corresponding field.
 			summary: List of summary instructions for corresponding fields.
 			visualization: List of visualization instructions for corresponding fields.
+			allow_api_submissions: Boolean to determine if data for this topic should be added through the API
 
 		Returns:
 			None
