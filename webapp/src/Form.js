@@ -6,8 +6,14 @@ class Form extends Component {
 	constructor(props) {
 		super(props);
 
-		const params = new URLSearchParams(document.location.href.match(/\?.*/)[0]);
-		const token = params.get("token") || "";
+		const query = document.location.href.match(/\?.*/);
+		var token;
+		if (query) {
+			const params = new URLSearchParams(query[0]);
+			token = params.get("token");
+		} else {
+			token = "";
+		}
 
 		this.state = {
 			"stars": null,
