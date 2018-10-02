@@ -48,12 +48,10 @@ class DictConnection(DBConnection):
 
 		ret = []
 		for topic in topics:
-			ret.append({
-				"topic": topic["topic"],
-				"description": topic["description"],
-				"fields": topic["fields"],
-				"units": topic["units"]
-			})
+			topic_d = {}
+			for field in DBConnection.TOPIC_FIELDS:
+				topic_d[field] = topic[field]
+				ret.append(topic_d)
 		return ret
 
 	def getTopic(self, topic):
@@ -62,12 +60,10 @@ class DictConnection(DBConnection):
 		except StopIteration:
 			raise KeyError("Topic '" + topic + "' not found from database")
 
-		return {
-			"topic": topic_d["topic"],
-			"description": topic_d["description"],
-			"fields": topic_d["fields"],
-			"units": topic_d["units"]
-		}
+		topic = {}
+		for field in DBConnection.TOPIC_FIELDS:
+			topic[field] = topic_d[field]
+		return topic
 
 	def getData(self, topic):
 		try:

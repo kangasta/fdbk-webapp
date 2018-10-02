@@ -64,12 +64,10 @@ class MongoConnection(DBConnection):
 
 			ret = []
 			for topic in topics:
-				ret.append({
-					"topic": topic["topic"],
-					"description": topic["description"],
-					"fields": topic["fields"],
-					"units": topic["units"]
-				})
+				topic_d = {}
+				for field in DBConnection.TOPIC_FIELDS:
+					topic_d[field] = topic[field]
+				ret.append(topic_d)
 			return ret
 
 	def getTopic(self, topic):
@@ -81,12 +79,10 @@ class MongoConnection(DBConnection):
 				raise KeyError("Topic '" + topic + "' not found from database '" + self.__db + "'")
 			topic = topics[0]
 
-			return {
-				"topic": topic["topic"],
-				"description": topic["description"],
-				"fields": topic["fields"],
-				"units": topic["units"]
-			}
+			topic_d = {}
+			for field in DBConnection.TOPIC_FIELDS:
+				topic_d[field] = topic[field]
+			return topic_d
 
 	def getData(self, topic):
 		with MongoClient(self.__mongo_url) as client:
