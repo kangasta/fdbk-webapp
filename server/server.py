@@ -94,6 +94,11 @@ def addData(topic):
 		return jsonify(ActionNotAllowedJSON), 403
 	if config["AddTokens"] and ("token" not in request.args or request.args["token"] not in config["AddTokens"]):
 		return jsonify(InvalidTokenJSON), 403
+	if not DBConnection.getTopic(topic)["allow_api_submissions"]:
+		return jsonify({
+			"error": "Data submissions through API not allowed for topic '" + topic + "'"
+		}), 403
+
 	input = request.get_json()
 	try:
 		DBConnection.addData(topic, input)
@@ -151,7 +156,7 @@ if __name__ =='__main__':
 
 	# TODO: This is for initial demo, please remove later
 	try:
-		DBConnection.addTopic("IPA", "Taste review of this cool IPA!", ["stars","text"], ["stars", None])
+		DBConnection.addTopic("IPA", "Taste review of this cool IPA!", ["stars","text"], ["stars", None], allow_api_submissions=False)
 	except KeyError:
 		pass
 
