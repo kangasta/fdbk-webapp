@@ -156,7 +156,7 @@ if __name__ =='__main__':
 
 	# TODO: This is for initial demo, please remove later
 	try:
-		DBConnection.addTopic("IPA", "Taste review of this cool IPA!", ["stars","text"], ["stars", None], allow_api_submissions=False)
+		DBConnection.addTopic("IPA", "Taste review of this cool IPA!", ["stars","text"], ["stars", None])
 	except KeyError:
 		pass
 
