@@ -31,9 +31,16 @@ class Form extends Component {
 	}
 
 	componentDidMount() {
+		if (!this.props.topic) {
+			this.setState({view: {error: "Form created without topic"}})
+			return;
+		}
 		fetch('/get/topic/' + this.props.topic)
 			.then((response) => response.json())
 			.then((response_json) => {
+				if (response_json.hasOwnProperty('error') && response_json.error) {
+					throw new Error(response_json.error);
+				}
 				this.setState({view: response_json});
 			})
 			.catch((error_msg) => {
@@ -165,7 +172,7 @@ class Form extends Component {
 
 // TODO: This is for initial demo, please remove later
 Form.defaultProps = {
-	topic: 'IPA'
+	topic: ''
 };
 
 Form.propTypes = {
