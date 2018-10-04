@@ -10,6 +10,10 @@ class App extends Component {
 		super(props);
 
 		this.state = this.parseURL();
+		window.history.replaceState(this.state, "fdbk", this.state.url);
+		window.onpopstate = (event) => {
+			this.setState(event.state);
+		};
 
 		this.navigate = this.navigate.bind(this);
 	}
@@ -32,19 +36,23 @@ class App extends Component {
 			return {
 				"view": {
 					"topic": match[1]
-				}
+				},
+				"url": match[0]
 			};
 		} else {
 			return {
 				"view": {
 					"topics": null
-				}
+				},
+				"url": "/#/"
 			};
 		}
 	}
 
 	navigate(url) {
-		this.setState(this.parseURL(url));
+		this.setState(this.parseURL(url), ()=>{
+			window.history.pushState(this.state, "fdbk", this.state.url);
+		});
 	}
 
 	render() {
