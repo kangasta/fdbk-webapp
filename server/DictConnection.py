@@ -51,7 +51,7 @@ class DictConnection(DBConnection):
 			topic_d = {}
 			for field in DBConnection.TOPIC_FIELDS:
 				topic_d[field] = topic[field]
-				ret.append(topic_d)
+			ret.append(topic_d)
 		return ret
 
 	def getTopic(self, topic):
