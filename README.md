@@ -1,3 +1,3 @@
-# How's my driving?
+# fdbk-webapp
 
-**Work in progress** Webapp and server to implement feedback collection system.
+Webapp for [kangasta/fdbk](https://github.com/kangasta/fdbk.git).
