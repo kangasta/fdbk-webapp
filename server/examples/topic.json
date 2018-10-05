@@ -7,10 +7,15 @@
   ],
   "units": [
     "stars",
-    null
+    "text"
   ],
   "summary": [
-	null,
+	"average",
 	null
-  ]
+  ],
+  "visualization": [
+	"percent-stacked-bar",
+	null
+  ],
+  "allow_api_submissions": true
 }
