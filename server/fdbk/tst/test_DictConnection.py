@@ -5,7 +5,7 @@ try:
 except ImportError:
 	from mock import Mock, patch
 
-from DictConnection import DictConnection
+from fdbk import DictConnection
 
 class DictConnectionTest(TestCase):
 	def test_cannot_add_topic_twice(self):

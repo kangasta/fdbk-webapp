@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from DBConnection import DBConnection
+from fdbk import DBConnection
 
 class DictConnection(DBConnection):
 	def __init__(self):

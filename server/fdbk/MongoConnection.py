@@ -1,7 +1,7 @@
 from datetime import datetime
 from pymongo import MongoClient
 
-from DBConnection import DBConnection
+from fdbk import DBConnection
 
 class MongoConnection(DBConnection):
 	def __init__(self, mongo_url, db="default_db", username=None, password=None, auth_source="admin"):

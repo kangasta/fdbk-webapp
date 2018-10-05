@@ -49,6 +49,7 @@ __config = __read_config(__args.config_file)
 # Exports:
 
 APP = Flask(__name__)
+
 def start():
 	APP.run(use_reloader=True, host=__args.host, port=__args.port, threaded=True)
 
@@ -62,7 +63,7 @@ __ActionNotAllowedJSON = {
 	"error": "Action not allowed"
 }
 
-__DBConnectionMod = import_module(__config["DBConnection"])
+__DBConnectionMod = import_module("fdbk." + __config["DBConnection"])
 __DBConnection = __DBConnectionMod.ConnectionClass(*(__config["DBParameters"]))
 
 # API
