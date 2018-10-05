@@ -1,11 +1,8 @@
 FROM python:3-alpine
 
-COPY server/requirements.txt ./
-RUN pip install -r requirements.txt && rm -f requirements.txt
+RUN pip install fdbk
 
 WORKDIR /app/web
-# Copy server to webapp folder for easier flask setup
-COPY server/*.py ./
 
 WORKDIR /app/
 COPY webapp/ .
@@ -19,5 +16,5 @@ RUN apk add nodejs npm && \
 
 WORKDIR /app/web
 EXPOSE 3030
-ENTRYPOINT [ "python", "server.py" ]
+ENTRYPOINT [ "fdbk-server" ]
 CMD [ "-p", "3030" ]

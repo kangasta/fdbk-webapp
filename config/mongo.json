@@ -1,8 +1,12 @@
 {
-	"DBConnection": "DictConnection",
-	"DBParameters": [],
+	"DBConnection": "MongoConnection",
+	"DBParameters": [
+		"database",
+		"feedback"
+	],
 	"AllowedActions": [
 		"addData",
+		"addTopic",
 		"getData",
 		"getTopics",
 		"getTopic"
