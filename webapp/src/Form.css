@@ -1,0 +1,31 @@
+.Form {
+	border-radius: 1em;
+	background-color: #CCC;
+	margin: 2.5em 1em 5em;
+	padding: 1em;
+	width: 45em;
+}
+
+input[type=text],textarea {
+	border: solid #666 thin;
+	border-radius: 0.666em;
+	box-sizing: border-box;
+	font-family: inherit;
+	padding: 0.666em;
+	width: 100%;
+}
+
+button {
+	background-color: #AAA;
+	border: solid #666 thin;
+	border-radius: 0.666em;
+	font-family: inherit;
+	font-size: inherit;
+	margin: 2em 0 1em;
+	min-width: 20em;
+	padding: 0.333em;
+}
+
+.Submit {
+	text-align: center;
+}

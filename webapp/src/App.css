@@ -1,0 +1,17 @@
+
+ @import url('https://fonts.googleapis.com/css?family=Quicksand');
+/*
+@import url('https://fonts.googleapis.com/css?family=Crimson+Text|Lobster|Quicksand|Source+Code+Pro');
+
+font-family: 'Crimson Text', serif;
+font-family: 'Quicksand', sans-serif;
+font-family: 'Lobster', cursive;
+font-family: 'Source Code Pro', monospace;
+*/
+
+.App {
+	font-family: 'Quicksand', sans-serif;
+	left: 50%;
+	position: absolute;
+	transform: translateX(-50%);
+}

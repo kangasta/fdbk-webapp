@@ -136,34 +136,36 @@ class Form extends Component {
 				<p>{this.state.view.description}</p>
 				<div className="Stars">
 					<h2>Stars</h2>
-						{/* TODO: https://codepen.io/jamesbarnett/pen/vlpkh */}
-						{[...Array(5).keys()].map(i => (
-							<span className="Star">
-								<input
-									key={i+1}
-									type="radio"
-									name="stars"
-									onClick={this.starsOnClick}
-									value={i+1}
-								/>
-								<label for={i+1}>{i+1}</label>
-							</span>
-						))}
+					{/* TODO: https://codepen.io/jamesbarnett/pen/vlpkh */}
+					{[...Array(5).keys()].map(i => (
+						<span className="Star">
+							<input
+								key={i+1}
+								type="radio"
+								name="stars"
+								onClick={this.starsOnClick}
+								value={i+1}
+							/>
+							<label for={i+1}>{i+1}</label>
+						</span>
+					))}
 				</div>
 				<div className="Stars">
-				<h2>Text</h2>
-				<textarea name="text" cols="50" onChange={this.textOnChange}></textarea>
+					<h2>Text</h2>
+					<textarea name="text" cols="50" onChange={this.textOnChange}></textarea>
 				</div>
 				<div className="Token">
-				<h2>Pre-shared token</h2>
-				<input
-					type="text"
-					name="token"
-					onChange={this.tokenOnChange}
-					value={this.state.token}
-				/>
+					<h2>Pre-shared token</h2>
+					<input
+						type="text"
+						name="token"
+						onChange={this.tokenOnChange}
+						value={this.state.token}
+					/>
 				</div>
-				<button onClick={this.submitOnClick}>Submit</button>
+				<div className="Submit">
+					<button onClick={this.submitOnClick}>Submit</button>
+				</div>
 				<p>{JSON.stringify(this.state, null, 2)}</p>
 			</div>
 		);
