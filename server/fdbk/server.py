@@ -46,6 +46,12 @@ def __generate_parser():
 __args = __generate_parser().parse_args()
 __config = __read_config(__args.config_file)
 
+# Exports:
+
+APP = Flask(__name__)
+def start():
+	APP.run(use_reloader=True, host=__args.host, port=__args.port, threaded=True)
+
 # Helpers:
 
 __InvalidTokenJSON = {
@@ -60,8 +66,6 @@ __DBConnectionMod = import_module(__config["DBConnection"])
 __DBConnection = __DBConnectionMod.ConnectionClass(*(__config["DBParameters"]))
 
 # API
-
-APP = Flask(__name__)
 
 if __config["ServeCWD"]:
 	@APP.route('/')
@@ -167,4 +171,4 @@ if __name__ =='__main__':
 		"text": "Solid work. Nothing too special."
 	})
 
-	APP.run(use_reloader=True, host=__args.host, port=__args.port, threaded=True)
+	start()
