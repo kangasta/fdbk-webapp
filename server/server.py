@@ -2,69 +2,78 @@ from flask import Flask, jsonify, request, send_from_directory
 from importlib import import_module
 
 import argparse
+import json
 import os
 import requests
 import uuid
 
-# TODO: This is for initial demo, please remove later
-try:
-	mongo_user = os.environ["MONGO_USERNAME"]
-	mongo_pass = os.environ["MONGO_PASSWORD"]
-except KeyError:
-	mongo_user = None
-	mongo_pass = None
+# Main:
 
-# TODO: This is for initial demo, please remove later
-try:
-	mongo_auth_db = os.environ["MONGO_AUTH_DB"]
-except KeyError:
-	mongo_auth_db = "admin"
-
-# TODO: This is for initial demo, move to JSON file later
-config = {
-	"DBConnection": "MongoConnection",
-	"DBParameters": [
-		"database",
-		"feedback",
-		mongo_user,
-		mongo_pass,
-		mongo_auth_db
-	],
+__default_config = {
+	"DBConnection": "DictConnection",
+	"DBParameters": [],
 	"AllowedActions": [
 		"addData",
-		"addTopic",
 		"getData",
 		"getTopics",
 		"getTopic"
 	],
-	"AddTokens": ["cat", "dog"],
 	"ServeCWD": True
 }
 
-InvalidTokenJSON = {
+def __read_config(filename):
+	if not filename:
+		return __default_config
+	with open(filename, "r") as f:
+		return json.load(f)
+
+def __generate_parser():
+	parser = argparse.ArgumentParser()
+	parser.add_argument("-c","--config-file",
+		help="configuration file path",
+		default="",
+		type=str)
+	parser.add_argument("--host",
+		help="hosts to serve to (default = 0.0.0.0)",
+		default="0.0.0.0",
+		type=str)
+	parser.add_argument("-p","--port",
+		help="port to serve from (default = 8080)",
+		default=8080,
+		type=int)
+	return parser
+
+__args = __generate_parser().parse_args()
+__config = __read_config(__args.config_file)
+
+# Helpers:
+
+__InvalidTokenJSON = {
 	"error": "Token not recognized"
 }
 
-ActionNotAllowedJSON = {
+__ActionNotAllowedJSON = {
 	"error": "Action not allowed"
 }
 
-DBConnectionMod = import_module(config["DBConnection"])
-DBConnection = DBConnectionMod.ConnectionClass(*(config["DBParameters"]))
+__DBConnectionMod = import_module(__config["DBConnection"])
+__DBConnection = __DBConnectionMod.ConnectionClass(*(__config["DBParameters"]))
 
-app = Flask(__name__)
+# API
 
-if config["ServeCWD"]:
-	@app.route('/')
+APP = Flask(__name__)
+
+if __config["ServeCWD"]:
+	@APP.route('/')
 	def index():
 		return send_from_directory('.', 'index.html')
 
-@app.route('/add/topic', methods=["POST"])
+@APP.route('/add/topic', methods=["POST"])
 def addTopic():
-	if "addTopic" not in config["AllowedActions"]:
-		return jsonify(ActionNotAllowedJSON), 403
-	if config["AddTokens"] and ("token" not in request.args or request.args["token"] not in config["AddTokens"]):
-		return jsonify(InvalidTokenJSON), 403
+	if "addTopic" not in __config["AllowedActions"]:
+		return jsonify(__ActionNotAllowedJSON), 403
+	if __config["AddTokens"] and ("token" not in request.args or request.args["token"] not in __config["AddTokens"]):
+		return jsonify(__InvalidTokenJSON), 403
 	json_in = request.get_json()
 
 	topic = json_in.pop("topic", None)
@@ -74,7 +83,7 @@ def addTopic():
 		}), 404
 
 	try:
-		DBConnection.addTopic(topic, **json_in)
+		__DBConnection.addTopic(topic, **json_in)
 	except KeyError as e:
 		# Field not available in input data
 		return jsonify({
@@ -88,20 +97,20 @@ def addTopic():
 		"success": "Data successfully added to DB"
 	})
 
-@app.route('/add/data/<topic>', methods=["POST"])
+@APP.route('/add/data/<topic>', methods=["POST"])
 def addData(topic):
-	if "addData" not in config["AllowedActions"]:
-		return jsonify(ActionNotAllowedJSON), 403
-	if config["AddTokens"] and ("token" not in request.args or request.args["token"] not in config["AddTokens"]):
-		return jsonify(InvalidTokenJSON), 403
-	if not DBConnection.getTopic(topic)["allow_api_submissions"]:
+	if "addData" not in __config["AllowedActions"]:
+		return jsonify(__ActionNotAllowedJSON), 403
+	if __config["AddTokens"] and ("token" not in request.args or request.args["token"] not in __config["AddTokens"]):
+		return jsonify(__InvalidTokenJSON), 403
+	if not __DBConnection.getTopic(topic)["allow_api_submissions"]:
 		return jsonify({
 			"error": "Data submissions through API not allowed for topic '" + topic + "'"
 		}), 403
 
 	input = request.get_json()
 	try:
-		DBConnection.addData(topic, input)
+		__DBConnection.addData(topic, input)
 	except KeyError as e:
 		# Topic not defined
 		return jsonify({
@@ -116,30 +125,30 @@ def addData(topic):
 		"success": "Data successfully added to DB"
 	})
 
-@app.route('/get/topics', methods=["GET"])
+@APP.route('/get/topics', methods=["GET"])
 def getTopics():
-	if "getTopics" not in config["AllowedActions"]:
-		return jsonify(ActionNotAllowedJSON), 403
-	return jsonify(DBConnection.getTopics())
+	if "getTopics" not in __config["AllowedActions"]:
+		return jsonify(__ActionNotAllowedJSON), 403
+	return jsonify(__DBConnection.getTopics())
 
-@app.route('/get/topic/<topic>', methods=["GET"])
+@APP.route('/get/topic/<topic>', methods=["GET"])
 def getTopic(topic):
-	if "getTopic" not in config["AllowedActions"]:
-		return jsonify(ActionNotAllowedJSON), 403
+	if "getTopic" not in __config["AllowedActions"]:
+		return jsonify(__ActionNotAllowedJSON), 403
 	try:
-		topic_json = DBConnection.getTopic(topic)
+		topic_json = __DBConnection.getTopic(topic)
 		return jsonify(topic_json)
 	except KeyError as e:
 		return jsonify({
 			"error": str(e)
 		}), 404
 
-@app.route('/get/data/<topic>', methods=["GET"])
+@APP.route('/get/data/<topic>', methods=["GET"])
 def getData(topic):
-	if "getData" not in config["AllowedActions"]:
-		return jsonify(ActionNotAllowedJSON), 403
+	if "getData" not in __config["AllowedActions"]:
+		return jsonify(__ActionNotAllowedJSON), 403
 	try:
-		data = DBConnection.getData(topic)
+		data = __DBConnection.getData(topic)
 		return jsonify(data)
 	except KeyError as e:
 		return jsonify({
@@ -147,17 +156,15 @@ def getData(topic):
 		}), 404
 
 if __name__ =='__main__':
-	parser = argparse.ArgumentParser()
-	parser.add_argument("-p","--port",
-		help="port to serve from",
-		default=8080,
-		type=int)
-	args = parser.parse_args()
-
 	# TODO: This is for initial demo, please remove later
 	try:
-		DBConnection.addTopic("IPA", "Taste review of this cool IPA!", ["stars","text"], ["stars", None])
+		__DBConnection.addTopic("IPA", "Taste review of this cool IPA!", ["stars","text"], ["stars", None], ["average", null], ["percent-stacked-bar", None], True)
 	except KeyError:
 		pass
 
-	app.run(use_reloader=True, host='0.0.0.0', port=args.port, threaded=True)
+	__DBConnection.addData("IPA", {
+		"stars": 3,
+		"text": "Solid work. Nothing too special."
+	})
+
+	APP.run(use_reloader=True, host=__args.host, port=__args.port, threaded=True)
