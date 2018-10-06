@@ -1,0 +1,12 @@
+{
+	"DBConnection": "DictConnection",
+	"DBParameters": [],
+	"AllowedActions": [
+		"addData",
+		"addTopic",
+		"getData",
+		"getTopics",
+		"getTopic"
+	],
+	"ServeCWD": true
+}
