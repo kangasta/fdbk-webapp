@@ -1,10 +1,42 @@
+@media (min-width: 49em) {
+	.FdbkContainer {
+		width: 45em;
+	}
+
+	.FdbkContainer::after {
+		width: 24.5em;
+	}
+}
+
+@media (min-width: 29em) and (max-width: 49em) {
+	.FdbkContainer {
+		width: 25em;
+		width: calc(100vw - 4em);
+	}
+
+	.FdbkContainer::after {
+		width: 14.5em;
+		width: calc(100vw - 0);
+	}
+}
+
+@media (max-width: 29em) {
+	.FdbkContainer {
+		font-size: 3.4483vw;
+		width: 25em;
+	}
+
+	.FdbkContainer::after {
+		width: 14.5em;
+	}
+}
+
 .FdbkContainer {
 	border-radius: 1em;
 	background-color: #CCC;
 	margin: 2.5em 1em 5em;
 	padding: 1em;
 	overflow: hidden;
-	width: 45em;
 }
 
 .FdbkContainer::after {
@@ -20,5 +52,4 @@
 	margin-top: .5em;
 	padding: .333em 0 1em;
 	text-align: center;
-	width: 24.5em;
 }
