@@ -166,7 +166,7 @@ class Form extends Component {
 				<div className="Submit">
 					<button onClick={this.submitOnClick}>Submit</button>
 				</div>
-				<p>{JSON.stringify(this.state, null, 2)}</p>
+				{/* Output current state for debugging: <p>{JSON.stringify(this.state, null, 2)}</p> */}
 			</div>
 		);
 	}
