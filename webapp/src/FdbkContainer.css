@@ -1,0 +1,24 @@
+.FdbkContainer {
+	border-radius: 1em;
+	background-color: #CCC;
+	margin: 2.5em 1em 5em;
+	padding: 1em;
+	overflow: hidden;
+	width: 45em;
+}
+
+.FdbkContainer::after {
+	background-color: purple;
+	box-sizing: border-box;
+	color: #CCC;
+	content: "fdbk";
+	display: block;
+	font-family: 'Lobster', cursive;
+	font-size: 2em;
+	margin-bottom: -1em;
+	margin-left: -1em;
+	margin-top: .5em;
+	padding: .333em 0 1em;
+	text-align: center;
+	width: 24.5em;
+}

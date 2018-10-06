@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import FdbkContainer from './FdbkContainer';
 import Form from './Form';
 import TopicList from './TopicList';
 
@@ -58,7 +59,9 @@ class App extends Component {
 	render() {
 		return (
 			<div className="App">
-				{this.getActiveView()}
+				<FdbkContainer>
+					{this.getActiveView()}
+				</FdbkContainer>
 			</div>
 		);
 	}

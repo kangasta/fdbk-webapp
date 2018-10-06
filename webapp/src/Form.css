@@ -1,11 +1,3 @@
-.Form {
-	border-radius: 1em;
-	background-color: #CCC;
-	margin: 2.5em 1em 5em;
-	padding: 1em;
-	width: 45em;
-}
-
 input[type=text],textarea {
 	border: solid #666 thin;
 	border-radius: 0.666em;
