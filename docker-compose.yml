@@ -11,12 +11,12 @@ services:
     - --config-file
     - /app/config.json
     - --port
-    - "3030"
+    - "8080"
     hostname: server
     image: how-is-my-driving
     restart: on-failure
     ports:
-    - "3030:3030"
+    - "8080:8080"
     volumes:
     - ./config/mongo.json:/app/config.json
   database:

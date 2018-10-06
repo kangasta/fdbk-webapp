@@ -15,6 +15,6 @@ RUN apk add nodejs npm && \
 	apk del nodejs npm;
 
 WORKDIR /app/web
-EXPOSE 3030
+EXPOSE 8080
 ENTRYPOINT [ "fdbk-server" ]
-CMD [ "-p", "3030" ]
+CMD [ "-p", "8080" ]
