@@ -1,11 +1,26 @@
 {
-  "short_name": "Feedback",
-  "name": "Feedback form",
+  "short_name": "fdbk",
+  "name": "fdbk webapp",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src": "favicon64.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon512.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ],
   "start_url": "./index.html",
