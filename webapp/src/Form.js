@@ -152,17 +152,18 @@ class Form extends Component {
 				</div>
 				<div className="Stars">
 					<h2>Text</h2>
-					<textarea name="text" cols="50" onChange={this.textOnChange}></textarea>
+					<textarea name="text" onChange={this.textOnChange}></textarea>
 				</div>
-				<div className="Token">
-					<h2>Pre-shared token</h2>
-					<input
-						type="text"
-						name="token"
-						onChange={this.tokenOnChange}
-						value={this.state.token}
-					/>
-				</div>
+				{this.props.requires_token ?
+					<div className="Token">
+						<h2>Pre-shared token</h2>
+						<input
+							type="text"
+							name="token"
+							onChange={this.tokenOnChange}
+							value={this.state.token}
+						/>
+					</div> : null}
 				<div className="Submit">
 					<button onClick={this.submitOnClick}>Submit</button>
 				</div>
@@ -174,11 +175,13 @@ class Form extends Component {
 
 // TODO: This is for initial demo, please remove later
 Form.defaultProps = {
-	topic: ''
+	topic: '',
+	requires_token: false
 };
 
 Form.propTypes = {
-	topic: PropTypes.string
+	topic: PropTypes.string,
+	requires_token: PropTypes.bool
 };
 
 export default Form;
