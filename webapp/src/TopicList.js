@@ -66,7 +66,6 @@ class TopicList extends Component {
 	}
 }
 
-// TODO: This is for initial demo, please remove later
 TopicList.defaultProps = {
 	navigate: ()=>undefined
 };

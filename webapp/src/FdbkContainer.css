@@ -43,7 +43,7 @@
 	background-color: purple;
 	box-sizing: border-box;
 	color: #CCC;
-	content: "fdbk";
+	content: attr(data-footer-text);
 	display: block;
 	font-family: 'Lobster', cursive;
 	font-size: 2em;
