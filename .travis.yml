@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+  - "node"
+
+install:
+- cd webapp
+- npm install
+test:
+- npm test -- --coverage;
