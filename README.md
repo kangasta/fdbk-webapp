@@ -1,5 +1,7 @@
 # fdbk-webapp
 
+[![Build Status](https://travis-ci.org/kangasta/fdbk-webapp.svg?branch=master)](https://travis-ci.org/kangasta/fdbk-webapp)
+
 Webapp for [kangasta/fdbk](https://github.com/kangasta/fdbk.git).
 
 ## Usage
