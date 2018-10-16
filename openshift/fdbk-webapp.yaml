@@ -1,0 +1,102 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: fdbk-webapp-template
+  annotations:
+    description: "fdbk webapp"
+objects:
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    name: fdbk-config
+  data:
+    config.json: |
+      {
+        "DBConnection": "MongoConnection",
+        "DBParameters": [
+          "database",
+          "feedback",
+          "<mongo_username>",
+          "<mongo_password>"
+        ],
+        "AllowedActions": [
+          "addData",
+          "addTopic",
+          "getData",
+          "getTopics",
+          "getTopic"
+        ],
+        "AddTokens": ["2f45", "976c"],
+        "ServeCWD": true
+      }
+
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    name: fdbk-webapp
+  spec:
+    template: 
+      metadata:
+        labels:
+          name: fdbk-webapp
+      spec:
+        containers:
+          - name: fdbk-webapp
+            image: "docker.io/toimela/fdbk-webapp:v0.1"
+            ports:
+             - containerPort: 8080
+               protocol: TCP
+            volumeMounts:
+             - name: configvolume
+               mountPath: /app/config.json
+               subPath: config.json
+        volumes:
+          - name: configvolume
+            configMap:
+              name: fdbk-config
+    replicas: 1
+    triggers:
+      - type: ConfigChange 
+      - type: ImageChange 
+        imageChangeParams:
+          automatic: true
+          containerNames:
+            - fdbk-webapp
+          from:
+            kind: ImageStreamTag
+            name: fdbk-webapp:v0.1
+    strategy: 
+      type: Rolling
+    paused: false 
+    revisionHistoryLimit: 2 
+    minReadySeconds: 0
+
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: fdbk-webapp
+  spec:
+    dockerImageRepository: docker.io/toimela/fdbk-webapp:v0.1
+
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: fdbk-webapp      
+  spec:
+    selector:                  
+      name: fdbk-webapp
+    ports:
+    - nodePort: 0
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+
+- apiVersion: v1
+  kind: Route
+  metadata:
+    name: beer
+  spec:
+    to:
+      kind: Service
+      name: fdbk-webapp
+
