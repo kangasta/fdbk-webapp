@@ -53,3 +53,13 @@
 	padding: .333em 0 1em;
 	text-align: center;
 }
+
+.FdbkContainer .Code {
+	background-color: #666;
+	border-radius: 1em;
+	color: #CCC;
+	font-family: 'Source Code Pro', monospace;
+	font-size: 0.75em;
+	padding: 1em;
+	white-space: pre-wrap;
+}

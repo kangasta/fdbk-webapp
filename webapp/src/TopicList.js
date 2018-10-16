@@ -56,8 +56,8 @@ class TopicList extends Component {
 				<h1>Topics</h1>
 				<ul>
 					{this.state.view.topics.map(topic => (
-						<li className="Topic" onClick={()=>{this.props.navigate("/#/topic/" + topic.topic)}}>
-							{topic.topic}
+						<li className="Topic">
+							{topic.topic} | <span className="Link" onClick={()=>{this.props.navigate("/#/form/" + topic.topic)}}>Form</span> | <span className="Link" onClick={()=>{this.props.navigate("/#/summary/" + topic.topic)}}>Summary</span>
 						</li>
 					))}
 				</ul>
