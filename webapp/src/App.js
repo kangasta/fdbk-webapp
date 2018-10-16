@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import FdbkContainer from './FdbkContainer';
 import Form from './Form';
+import Summary from './Summary';
 import TopicList from './TopicList';
 
 import './App.css';
@@ -20,9 +21,13 @@ class App extends Component {
 	}
 
 	getActiveView() {
-		if (this.state.view.hasOwnProperty("topic")) {
+		if (this.state.view.hasOwnProperty("form")) {
 			return (
-				<Form topic={this.state.view.topic}/>
+				<Form topic={this.state.view.form}/>
+			);
+		} else if (this.state.view.hasOwnProperty("summary")) {
+			return (
+				<Summary topic={this.state.view.summary}/>
 			);
 		} else {
 			return (
@@ -33,10 +38,17 @@ class App extends Component {
 
 	parseURL(url=document.location.href) {
 		var match;
-		if (match = url.match(/#\/topic\/([^/]*)/)) {
+		if (match = url.match(/#\/form\/([^/]*)/)) {
 			return {
 				"view": {
-					"topic": match[1]
+					"form": match[1]
+				},
+				"url": match[0]
+			};
+		} else if (match = url.match(/#\/summary\/([^/]*)/)) {
+			return {
+				"view": {
+					"summary": match[1]
 				},
 				"url": match[0]
 			};
