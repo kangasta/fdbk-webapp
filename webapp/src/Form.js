@@ -129,9 +129,9 @@ class Form extends Component {
 					<h1>Success</h1>
 					<p>{this.state.view.success.toString()}</p>
 					<CallbackTimer
-						callback={()=>{alert("callback")}}
+						callback={()=>{this.props.navigate('/#/summary/' + this.props.topic)}}
 						time={5000}
-						text='Alert in '/>
+						text='Redirecting to results summary in '/>
 				</div>
 			);
 		}
@@ -182,11 +182,13 @@ class Form extends Component {
 
 // TODO: This is for initial demo, please remove later
 Form.defaultProps = {
+	navigate: ()=>undefined,
 	topic: '',
 	requires_token: false
 };
 
 Form.propTypes = {
+	navigate: PropTypes.func,
 	topic: PropTypes.string,
 	requires_token: PropTypes.bool
 };
