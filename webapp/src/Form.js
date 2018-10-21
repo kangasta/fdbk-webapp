@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
+import CallbackTimer from './CallbackTimer';
+
 import './Form.css';
 
 class Form extends Component {
@@ -125,6 +128,10 @@ class Form extends Component {
 				<div className="Form">
 					<h1>Success</h1>
 					<p>{this.state.view.success.toString()}</p>
+					<CallbackTimer
+						callback={()=>{alert("callback")}}
+						time={5000}
+						text='Alert in '/>
 				</div>
 			);
 		}
