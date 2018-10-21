@@ -10,6 +10,10 @@ class Summary extends Component {
 		rotation: -5 / 4 * Math.PI
 	};
 
+	supported_chart_types = [
+		'horseshoe'
+	];
+
 	constructor(props) {
 		super(props);
 
@@ -22,6 +26,26 @@ class Summary extends Component {
 
 	static capitalize(str_in) {
 		return (str_in.charAt(0).toUpperCase() + str_in.slice(1));
+	}
+
+	getChartObject(chartItem) {
+		if (chartItem.type == "horseshoe") {
+			const id = 'VisualizationChart' + Summary.capitalize(chartItem.field);
+
+			new Chart(id, {
+				type: 'doughnut',
+				data: {
+					datasets: [{
+						data: chartItem.data,
+						backgroundColor: ["#300080", "#580080", "#800080", "#800058", "#800030"],
+						borderColor: ["#CCC", "#CCC", "#CCC", "#CCC", "#CCC"]
+					}],
+					labels: chartItem.labels
+				},
+				options: this.horseshoe_options
+			});
+		}
+		return null;
 	}
 
 	componentDidMount() {
@@ -47,20 +71,7 @@ class Summary extends Component {
 		if (!this.state.view.visualizations) return;
 		const charts = this.state.view.visualizations.map(i => {
 			if (i === null) return null;
-			const id = 'VisualizationChart' + Summary.capitalize(i.field);
-
-			return new Chart(id, {
-				type: 'doughnut',
-				data: {
-					datasets: [{
-						data: i.data,
-						backgroundColor: ["#300080", "#580080", "#800080", "#800058", "#800030"],
-						borderColor: ["#CCC", "#CCC", "#CCC", "#CCC", "#CCC"]
-					}],
-					labels: i.labels
-				},
-				options: this.horseshoe_options
-			});
+			return this.getChartObject(i);
 		});
 	}
 
@@ -107,7 +118,9 @@ class Summary extends Component {
 						return (
 							<div className='VisualizationItem'>
 								<h2>{Summary.capitalize(i.field)}</h2>
-								<canvas className='VisualizationChart' id={'VisualizationChart' + Summary.capitalize(i.field)} width='800' height='400'></canvas>
+								{this.supported_chart_types.includes(i.type)
+									? <canvas className='VisualizationChart' id={'VisualizationChart' + Summary.capitalize(i.field)} width='800' height='400'></canvas>
+									: <p>Chart type '{i.type}' not supported by front-end.</p>}
 							</div>
 						);
 					})}
