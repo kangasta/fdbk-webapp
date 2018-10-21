@@ -1,21 +1,32 @@
+import Chart from 'chart.js';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
 import './Summary.css';
 
 class Summary extends Component {
+	horseshoe_options = {
+		circumference: 3 / 2 * Math.PI,
+		rotation: -5 / 4 * Math.PI
+	};
+
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			"view": {
-				"loading": "Waiting for feedback topic data from server"
+			'view': {
+				'loading': 'Waiting for feedback topic data from server'
 			}
 		};
 	}
 
+	static capitalize(str_in) {
+		return (str_in.charAt(0).toUpperCase() + str_in.slice(1));
+	}
+
 	componentDidMount() {
 		if (!this.props.topic) {
-			this.setState({view: {error: "Summary created without topic"}})
+			this.setState({view: {error: 'Summary created without topic'}})
 			return;
 		}
 		fetch('/get/summary/' + this.props.topic)
@@ -31,19 +42,41 @@ class Summary extends Component {
 			});
 	}
 
+	componentDidUpdate() {
+		// TODO, This is for initial demo, please parametrize later
+		if (!this.state.view.visualizations) return;
+		const charts = this.state.view.visualizations.map(i => {
+			if (i === null) return null;
+			const id = 'VisualizationChart' + Summary.capitalize(i.field);
+
+			return new Chart(id, {
+				type: 'doughnut',
+				data: {
+					datasets: [{
+						data: i.data,
+						backgroundColor: ["#300080", "#580080", "#800080", "#800058", "#800030"],
+						borderColor: ["#CCC", "#CCC", "#CCC", "#CCC", "#CCC"]
+					}],
+					labels: i.labels
+				},
+				options: this.horseshoe_options
+			});
+		});
+	}
+
 	render() {
-		if (this.state.view.hasOwnProperty("loading")) {
+		if (this.state.view.hasOwnProperty('loading')) {
 			return (
-				<div className="Summary">
+				<div className='Summary'>
 					<h1>Loading</h1>
 					<p>{this.state.view.loading.toString()}</p>
 				</div>
 			);
 		}
 
-		if (this.state.view.hasOwnProperty("error")) {
+		if (this.state.view.hasOwnProperty('error')) {
 			return (
-				<div className="Summary">
+				<div className='Summary'>
 					<h1>Error</h1>
 					<p>{this.state.view.error.toString()}</p>
 				</div>
@@ -52,11 +85,34 @@ class Summary extends Component {
 
 		// TODO, This is for initial demo, please parametrize later
 		return (
-			<div className="Summary">
+			<div className='Summary'>
 				<h1>{this.state.view.topic}</h1>
 				<p>{this.state.view.description}</p>
-				<p className="Code">{JSON.stringify(this.state, null, 2)}</p>
-				{/* Output current state for debugging: <p>{JSON.stringify(this.state, null, 2)}</p> */}
+				<div className='Summaries'>
+					<p className='SummaryItem'>
+						<span className="SummaryItemKeyNumeric">{this.state.view.num_entries}</span>entries
+					</p>
+					{this.state.view.summaries.map(i => {
+						if (i === null) return null;
+						return (
+							<p className='SummaryItem'>
+								{Summary.capitalize(i.type)}<span className="SummaryItemKeyNumeric">{Math.round(i.value * 10) / 10}</span>{i.field}
+							</p>
+						);
+					})}
+				</div>
+				<div className='Visualizations'>
+					{this.state.view.visualizations.map(i => {
+						if (i === null) return null;
+						return (
+							<div className='VisualizationItem'>
+								<h2>{Summary.capitalize(i.field)}</h2>
+								<canvas className='VisualizationChart' id={'VisualizationChart' + Summary.capitalize(i.field)} width='800' height='400'></canvas>
+							</div>
+						);
+					})}
+				</div>
+				{/* Output current state for debugging: <p className='Code'>{JSON.stringify(this.state, null, 2)}</p> */}
 			</div>
 		);
 	}
