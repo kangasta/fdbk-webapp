@@ -131,7 +131,9 @@ class Form extends Component {
 					<CallbackTimer
 						callback={()=>{this.props.navigate('/#/summary/' + this.props.topic)}}
 						time={5000}
-						text='Redirecting to results summary in '/>
+						time_className='FdbkContainerHighlightKeyNumeric'
+						text='Redirecting to results summary in '
+						text_className='FdbkContainerHighlight'/>
 				</div>
 			);
 		}

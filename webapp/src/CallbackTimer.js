@@ -42,9 +42,9 @@ class CallbackTimer extends Component {
 
 	render() {
 		return (
-			<div className="CallbackTimer">
-				<p>
-					{this.props.text} <span className='CallbackTimerTimeLeft'>
+			<div className='CallbackTimer'>
+				<p className={this.props.text_className}>
+					{this.props.text} <span className={'CallbackTimerTimeLeft ' + this.props.time_className}>
 						{Math.round(this.state.time_left / this.props.time_display_divider)}
 					</span>
 				</p>
@@ -55,8 +55,10 @@ class CallbackTimer extends Component {
 
 CallbackTimer.defaultProps = {
 	callback: () => undefined,
-	text: "fdbk",
+	text: 'fdbk',
+	text_className: '',
 	time: 5000,
+	time_className: '',
 	time_display_divider: 1000,
 	update_interval: 1000
 };
@@ -64,7 +66,9 @@ CallbackTimer.defaultProps = {
 CallbackTimer.propTypes = {
 	callback: PropTypes.func,
 	text: PropTypes.node,
+	text_classNme: PropTypes.string,
 	time: PropTypes.number,
+	time_className: PropTypes.string,
 	time_display_divider: PropTypes.number,
 	update_interval: PropTypes.number
 };
