@@ -100,14 +100,14 @@ class Summary extends Component {
 				<h1>{this.state.view.topic}</h1>
 				<p>{this.state.view.description}</p>
 				<div className='Summaries'>
-					<p className='SummaryItem'>
-						<span className="SummaryItemKeyNumeric">{this.state.view.num_entries}</span>entries
+					<p className='SummaryItem FdbkContainerHighlight'>
+						<span className="SummaryItemKeyNumeric FdbkContainerHighlightKeyNumeric">{this.state.view.num_entries}</span>entries
 					</p>
 					{this.state.view.summaries.map(i => {
 						if (i === null) return null;
 						return (
-							<p className='SummaryItem'>
-								{Summary.capitalize(i.type)}<span className="SummaryItemKeyNumeric">{Math.round(i.value * 10) / 10}</span>{i.field}
+							<p className='SummaryItem FdbkContainerHighlight'>
+								{Summary.capitalize(i.type)}<span className="SummaryItemKeyNumeric FdbkContainerHighlightKeyNumeric">{Math.round(i.value * 10) / 10}</span>{i.field}
 							</p>
 						);
 					})}
