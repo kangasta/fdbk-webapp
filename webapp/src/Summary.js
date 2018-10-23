@@ -29,7 +29,7 @@ class Summary extends Component {
 	}
 
 	getChartObject(chartItem) {
-		if (chartItem.type == "horseshoe") {
+		if (chartItem.type == 'horseshoe') {
 			const id = 'VisualizationChart' + Summary.capitalize(chartItem.field);
 
 			new Chart(id, {
@@ -37,8 +37,8 @@ class Summary extends Component {
 				data: {
 					datasets: [{
 						data: chartItem.data,
-						backgroundColor: ["#300080", "#580080", "#800080", "#800058", "#800030"],
-						borderColor: ["#CCC", "#CCC", "#CCC", "#CCC", "#CCC"]
+						backgroundColor: ['#300080', '#580080', '#800080', '#800058', '#800030'],
+						borderColor: ['#CCC', '#CCC', '#CCC', '#CCC', '#CCC']
 					}],
 					labels: chartItem.labels
 				},
@@ -50,7 +50,7 @@ class Summary extends Component {
 
 	componentDidMount() {
 		if (!this.props.topic) {
-			this.setState({view: {error: 'Summary created without topic'}})
+			this.setState({view: {error: 'Summary created without topic'}});
 			return;
 		}
 		fetch('/get/summary/' + this.props.topic)
@@ -69,7 +69,7 @@ class Summary extends Component {
 	componentDidUpdate() {
 		// TODO, This is for initial demo, please parametrize later
 		if (!this.state.view.visualizations) return;
-		const charts = this.state.view.visualizations.map(i => {
+		this.state.view.visualizations.map(i => {
 			if (i === null) return null;
 			return this.getChartObject(i);
 		});
@@ -106,7 +106,7 @@ class Summary extends Component {
 					{this.state.view.summaries.map(i => {
 						if (i === null) return null;
 						return (
-							<p className='SummaryItem FdbkContainerHighlight'>
+							<p key={i} className='SummaryItem FdbkContainerHighlight'>
 								{Summary.capitalize(i.type)}<span className="SummaryItemKeyNumeric FdbkContainerHighlightKeyNumeric">{Math.round(i.value * 10) / 10}</span>{i.field}
 							</p>
 						);
@@ -116,11 +116,11 @@ class Summary extends Component {
 					{this.state.view.visualizations.map(i => {
 						if (i === null) return null;
 						return (
-							<div className='VisualizationItem'>
+							<div key={i} className='VisualizationItem'>
 								<h2>{Summary.capitalize(i.field)}</h2>
 								{this.supported_chart_types.includes(i.type)
 									? <canvas className='VisualizationChart' id={'VisualizationChart' + Summary.capitalize(i.field)} width='800' height='400'></canvas>
-									: <p>Chart type '{i.type}' not supported by front-end.</p>}
+									: <p>Chart type {'\'' + i.type.toString() + '\''} not supported by front-end.</p>}
 							</div>
 						);
 					})}

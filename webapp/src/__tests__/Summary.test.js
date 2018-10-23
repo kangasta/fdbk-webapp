@@ -5,6 +5,6 @@ import Summary from '../Summary';
 
 describe('Summary',() => {
 	it('renders without crashing', () => {
-		mount(<Summary/>)
+		mount(<Summary/>);
 	});
 });

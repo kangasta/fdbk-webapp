@@ -5,6 +5,6 @@ import TopicList from '../TopicList';
 
 describe('TopicList', () => {
 	it('renders without crashing', () => {
-		mount(<TopicList/>)
+		mount(<TopicList/>);
 	});
 });

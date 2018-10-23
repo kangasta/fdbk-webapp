@@ -6,4 +6,5 @@ install:
 - cd webapp
 - npm install
 test:
+- ./node_modules/.bin/eslint .
 - npm test -- --coverage;
