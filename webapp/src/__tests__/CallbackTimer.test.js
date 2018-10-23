@@ -26,6 +26,7 @@ describe('CallbackTimer', () => {
 			expect(wrapper.find('.CallbackTimerTimeLeft').text()).toEqual(i.toString());
 			jest.runTimersToTime(1000);
 		}
+		wrapper.unmount();
 	});
 	it('allows customized time, display, and updating', () => {
 		const wrapper = mount(
@@ -35,6 +36,7 @@ describe('CallbackTimer', () => {
 			expect(wrapper.find('.CallbackTimerTimeLeft').text()).toEqual(((i % 2 ? i - 1 : i) / 2).toString());
 			jest.runTimersToTime(1000);
 		}
+		wrapper.unmount();
 	});
 	it('clears timers at unmount', () => {
 		const wrapper = mount(
