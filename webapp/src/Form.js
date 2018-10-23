@@ -38,7 +38,7 @@ class Form extends Component {
 			this.setState({view: {error: 'Form created without topic'}});
 			return;
 		}
-		fetch('/get/topic/' + this.props.topic)
+		return fetch('/get/topic/' + this.props.topic)
 			.then((response) => response.json())
 			.then((response_json) => {
 				if (response_json.hasOwnProperty('error') && response_json.error) {

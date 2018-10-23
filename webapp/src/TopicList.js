@@ -14,7 +14,7 @@ class TopicList extends Component {
 	}
 
 	componentDidMount() {
-		fetch('/get/topics')
+		return fetch('/get/topics')
 			//.then((response) => {console.log(response);return response.json()})
 			.then((response) => response.json())
 			.then((response_json) => {
