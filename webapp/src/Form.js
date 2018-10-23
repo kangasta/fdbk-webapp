@@ -107,7 +107,7 @@ class Form extends Component {
 	render() {
 		if (this.state.view.hasOwnProperty('loading')) {
 			return (
-				<div className="Form">
+				<div className="Form Loading">
 					<h1>Loading</h1>
 					<p>{this.state.view.loading.toString()}</p>
 				</div>
@@ -116,7 +116,7 @@ class Form extends Component {
 
 		if (this.state.view.hasOwnProperty('error')) {
 			return (
-				<div className="Form">
+				<div className="Form Error">
 					<h1>Error</h1>
 					<p>{this.state.view.error.toString()}</p>
 				</div>
@@ -125,7 +125,7 @@ class Form extends Component {
 
 		if (this.state.view.hasOwnProperty('success')) {
 			return (
-				<div className="Form">
+				<div className="Form Success">
 					<h1>Success</h1>
 					<p>{this.state.view.success.toString()}</p>
 					<CallbackTimer
