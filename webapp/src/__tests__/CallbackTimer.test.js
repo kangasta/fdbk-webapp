@@ -3,11 +3,10 @@ import { mount } from 'enzyme';
 
 import CallbackTimer from '../CallbackTimer';
 
-jest.useFakeTimers();
-
 describe('CallbackTimer', () => {
 	it('renders without crashing', () => {
-		mount(<CallbackTimer/>);
+		const wrapper = mount(<CallbackTimer/>);
+		wrapper.unmount();
 	});
 	it('calls callback after time has passed', () => {
 		const mock_callback = jest.fn();
