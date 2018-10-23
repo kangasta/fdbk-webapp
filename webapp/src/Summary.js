@@ -53,7 +53,7 @@ class Summary extends Component {
 			this.setState({view: {error: 'Summary created without topic'}});
 			return;
 		}
-		fetch('/get/summary/' + this.props.topic)
+		return fetch('/get/summary/' + this.props.topic)
 			.then((response) => response.json())
 			.then((response_json) => {
 				if (response_json.hasOwnProperty('error') && response_json.error) {
