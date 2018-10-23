@@ -15,7 +15,6 @@ class TopicList extends Component {
 
 	componentDidMount() {
 		return fetch('/get/topics')
-			//.then((response) => {console.log(response);return response.json()})
 			.then((response) => response.json())
 			.then((response_json) => {
 				if (response_json.hasOwnProperty('error') && response_json.error) {
@@ -35,7 +34,7 @@ class TopicList extends Component {
 	render() {
 		if (this.state.view.hasOwnProperty('loading')) {
 			return (
-				<div className="TopicList">
+				<div className="TopicList Loading">
 					<h1>Loading</h1>
 					<p>{this.state.view.loading.toString()}</p>
 				</div>
@@ -44,7 +43,7 @@ class TopicList extends Component {
 
 		if (this.state.view.hasOwnProperty('error')) {
 			return (
-				<div className="TopicList">
+				<div className="TopicList Error">
 					<h1>Error</h1>
 					<p>{this.state.view.error.toString()}</p>
 				</div>

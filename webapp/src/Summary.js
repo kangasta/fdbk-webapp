@@ -78,7 +78,7 @@ class Summary extends Component {
 	render() {
 		if (this.state.view.hasOwnProperty('loading')) {
 			return (
-				<div className='Summary'>
+				<div className='Summary Loading'>
 					<h1>Loading</h1>
 					<p>{this.state.view.loading.toString()}</p>
 				</div>
@@ -87,7 +87,7 @@ class Summary extends Component {
 
 		if (this.state.view.hasOwnProperty('error')) {
 			return (
-				<div className='Summary'>
+				<div className='Summary Error'>
 					<h1>Error</h1>
 					<p>{this.state.view.error.toString()}</p>
 				</div>
