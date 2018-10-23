@@ -13,17 +13,17 @@ class Form extends Component {
 		var token;
 		if (query) {
 			const params = new URLSearchParams(query[0]);
-			token = params.get("token");
+			token = params.get('token');
 		} else {
-			token = "";
+			token = '';
 		}
 
 		this.state = {
-			"stars": null,
-			"text": "",
-			"token": token,
-			"view": {
-				"loading": "Waiting for feedback topic data from server"
+			'stars': null,
+			'text': '',
+			'token': token,
+			'view': {
+				'loading': 'Waiting for feedback topic data from server'
 			}
 		};
 
@@ -35,7 +35,7 @@ class Form extends Component {
 
 	componentDidMount() {
 		if (!this.props.topic) {
-			this.setState({view: {error: "Form created without topic"}})
+			this.setState({view: {error: 'Form created without topic'}});
 			return;
 		}
 		fetch('/get/topic/' + this.props.topic)
@@ -53,30 +53,30 @@ class Form extends Component {
 
 	starsOnClick(event) {
 		this.setState({
-			"stars": Number(event.target.value)
+			'stars': Number(event.target.value)
 		});
 	}
 
 	textOnChange(event) {
 		this.setState({
-			"text": event.target.value,
+			'text': event.target.value,
 		});
 	}
 
 	tokenOnChange(event) {
 		this.setState({
-			"token": event.target.value,
+			'token': event.target.value,
 		});
 	}
 
-	submitOnClick(event) {
+	submitOnClick(/*event*/) {
 		this.setState({
-			"view": {
-				"loading": "Submitting feedback to server"
+			'view': {
+				'loading': 'Submitting feedback to server'
 			}
-		})
+		});
 
-		fetch("/add/data/" + this.state.view.topic + "?token=" + this.state.token, {
+		fetch('/add/data/' + this.state.view.topic + '?token=' + this.state.token, {
 			method: 'POST',
 			// TODO, This is for initial demo, please parametrize later
 			body: JSON.stringify({
@@ -88,24 +88,24 @@ class Form extends Component {
 			}
 		})
 		// TODO: should chacnge api to return JSON later
-		.then((response) => response.json())
-		.then((response_json) => {
-			if (response_json.hasOwnProperty('error') && response_json.error) {
-				throw new Error(response_json.error);
-			}
-			this.setState({
-				"view": {
-					"success": "Data submitted successfully"
+			.then((response) => response.json())
+			.then((response_json) => {
+				if (response_json.hasOwnProperty('error') && response_json.error) {
+					throw new Error(response_json.error);
 				}
+				this.setState({
+					'view': {
+						'success': 'Data submitted successfully'
+					}
+				});
+			})
+			.catch((error_msg) => {
+				this.setState({view: {error: error_msg.toString()}});
 			});
-		})
-		.catch((error_msg) => {
-			this.setState({view: {error: error_msg.toString()}});
-		});
 	}
 
 	render() {
-		if (this.state.view.hasOwnProperty("loading")) {
+		if (this.state.view.hasOwnProperty('loading')) {
 			return (
 				<div className="Form">
 					<h1>Loading</h1>
@@ -114,7 +114,7 @@ class Form extends Component {
 			);
 		}
 
-		if (this.state.view.hasOwnProperty("error")) {
+		if (this.state.view.hasOwnProperty('error')) {
 			return (
 				<div className="Form">
 					<h1>Error</h1>
@@ -123,13 +123,13 @@ class Form extends Component {
 			);
 		}
 
-		if (this.state.view.hasOwnProperty("success")) {
+		if (this.state.view.hasOwnProperty('success')) {
 			return (
 				<div className="Form">
 					<h1>Success</h1>
 					<p>{this.state.view.success.toString()}</p>
 					<CallbackTimer
-						callback={()=>{this.props.navigate('/#/summary/' + this.props.topic)}}
+						callback={()=>{this.props.navigate('/#/summary/' + this.props.topic);}}
 						time={5000}
 						time_className='FdbkContainerHighlightKeyNumeric'
 						text='Redirecting to results summary in '
@@ -147,7 +147,7 @@ class Form extends Component {
 					<h2>Stars</h2>
 					{/* TODO: https://codepen.io/jamesbarnett/pen/vlpkh */}
 					{[...Array(5).keys()].map(i => (
-						<span className="Star">
+						<span key={i} className="Star">
 							<input
 								key={i+1}
 								type="radio"
@@ -155,7 +155,7 @@ class Form extends Component {
 								onClick={this.starsOnClick}
 								value={i+1}
 							/>
-							<label for={i+1}>{i+1}</label>
+							<label htmlFor={i+1}>{i+1}</label>
 						</span>
 					))}
 				</div>

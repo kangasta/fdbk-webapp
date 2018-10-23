@@ -27,8 +27,8 @@ class CallbackTimer extends Component {
 				time_left: time_left,
 				timer: setTimeout(()=>{
 					this.progressTimer();
-				}, this.props.update_interval)}
-			}
+				}, this.props.update_interval)};
+		}
 		);
 	}
 
@@ -66,7 +66,7 @@ CallbackTimer.defaultProps = {
 CallbackTimer.propTypes = {
 	callback: PropTypes.func,
 	text: PropTypes.node,
-	text_classNme: PropTypes.string,
+	text_className: PropTypes.string,
 	time: PropTypes.number,
 	time_className: PropTypes.string,
 	time_display_divider: PropTypes.number,
