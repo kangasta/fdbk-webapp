@@ -6,7 +6,8 @@
 		"addTopic",
 		"getData",
 		"getTopics",
-		"getTopic"
+		"getTopic",
+		"getSummary"
 	],
 	"ServeCWD": true
 }
