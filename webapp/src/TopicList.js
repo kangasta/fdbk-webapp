@@ -7,44 +7,43 @@ class TopicList extends Component {
 		super(props);
 
 		this.state = {
-			"view": {
-				"loading": "Waiting for feedback topic data from server"
+			'view': {
+				'loading': 'Waiting for feedback topic data from server'
 			}
 		};
 	}
 
 	componentDidMount() {
-		fetch('/get/topics')
-			//.then((response) => {console.log(response);return response.json()})
+		return fetch('/get/topics')
 			.then((response) => response.json())
 			.then((response_json) => {
 				if (response_json.hasOwnProperty('error') && response_json.error) {
 					throw new Error(response_json.error);
 				}
 				this.setState({
-					"view": {
-						"topics": response_json
+					'view': {
+						'topics': response_json
 					}
 				});
 			})
 			.catch((error_msg) => {
-				this.setState({"view": {"error": error_msg.toString()}});
+				this.setState({'view': {'error': error_msg.toString()}});
 			});
 	}
 
 	render() {
-		if (this.state.view.hasOwnProperty("loading")) {
+		if (this.state.view.hasOwnProperty('loading')) {
 			return (
-				<div className="TopicList">
+				<div className="TopicList Loading">
 					<h1>Loading</h1>
 					<p>{this.state.view.loading.toString()}</p>
 				</div>
 			);
 		}
 
-		if (this.state.view.hasOwnProperty("error")) {
+		if (this.state.view.hasOwnProperty('error')) {
 			return (
-				<div className="TopicList">
+				<div className="TopicList Error">
 					<h1>Error</h1>
 					<p>{this.state.view.error.toString()}</p>
 				</div>
@@ -56,8 +55,8 @@ class TopicList extends Component {
 				<h1>Topics</h1>
 				<ul>
 					{this.state.view.topics.map(topic => (
-						<li className="Topic" onClick={()=>{this.props.navigate("/#/topic/" + topic.topic)}}>
-							{topic.topic}
+						<li key={topic} className="Topic">
+							{topic.topic} | <span className="Link" onClick={()=>{this.props.navigate('/#/form/' + topic.topic);}}>Form</span> | <span className="Link" onClick={()=>{this.props.navigate('/#/summary/' + topic.topic);}}>Summary</span>
 						</li>
 					))}
 				</ul>

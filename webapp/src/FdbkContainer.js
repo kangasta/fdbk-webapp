@@ -13,10 +13,12 @@ class FdbkContainer extends Component {
 }
 
 FdbkContainer.defaultProps = {
-	footer_text: "fdbk"
+	children: null,
+	footer_text: 'fdbk'
 };
 
 FdbkContainer.propTypes = {
+	children: PropTypes.node,
 	footer_text: PropTypes.string
 };
 

@@ -53,3 +53,28 @@
 	padding: .333em 0 1em;
 	text-align: center;
 }
+
+.FdbkContainer .Code {
+	background-color: #666;
+	border-radius: 1em;
+	color: #CCC;
+	font-family: 'Source Code Pro', monospace;
+	font-size: 0.75em;
+	padding: 1em;
+	white-space: pre-wrap;
+}
+
+.FdbkContainerHighlight {
+	background-color: #EEE;
+	border-radius: 0.8em;
+	color: #666;
+	font-size: 1.25em;
+	padding: 0.8em;
+	text-align: center;
+}
+
+.FdbkContainerHighlightKeyNumeric {
+	font-size: 2.5em;
+	font-family: 'Lobster', cursive;
+	margin: 0 0.2em;
+}

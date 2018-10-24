@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+  - "node"
+
+install:
+- cd webapp
+- npm install
+script:
+- ./node_modules/.bin/eslint .
+- npm test -- --coverage;
