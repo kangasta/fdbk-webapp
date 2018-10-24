@@ -17,16 +17,17 @@ objects:
           "database",
           "feedback",
           "<mongo_username>",
-          "<mongo_password>"
+          "<mongo_password>",
+          "feedback"
         ],
         "AllowedActions": [
           "addData",
           "addTopic",
           "getData",
+          "getSummary",
           "getTopics",
           "getTopic"
         ],
-        "AddTokens": ["2f45", "976c"],
         "ServeCWD": true
       }
 
@@ -42,10 +43,17 @@ objects:
       spec:
         containers:
           - name: fdbk-webapp
-            image: "docker.io/toimela/fdbk-webapp:v0.1"
+            image: "docker.io/toimela/fdbk-webapp:v0.2"
             ports:
              - containerPort: 8080
                protocol: TCP
+            args:
+             - --port=8080
+             - --config-file=/app/config.json
+            resources:
+              limits:
+                memory: "256Mi"
+                cpu: "500m"
             volumeMounts:
              - name: configvolume
                mountPath: /app/config.json
@@ -64,9 +72,13 @@ objects:
             - fdbk-webapp
           from:
             kind: ImageStreamTag
-            name: fdbk-webapp:v0.1
+            name: fdbk-webapp:v0.2
     strategy: 
       type: Rolling
+      resources:
+        limits:
+          cpu: "500m"
+          memory: "256Mi"
     paused: false 
     revisionHistoryLimit: 2 
     minReadySeconds: 0
@@ -76,7 +88,7 @@ objects:
   metadata:
     name: fdbk-webapp
   spec:
-    dockerImageRepository: docker.io/toimela/fdbk-webapp:v0.1
+    dockerImageRepository: docker.io/toimela/fdbk-webapp:v0.2
 
 - apiVersion: v1
   kind: Service
