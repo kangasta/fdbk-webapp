@@ -29,7 +29,8 @@ Modify OpenShift template `fdbk-webapp/openshift/fdbk-webapp.yaml` with correct 
       "database",
       "feedback",
       "<mongo_username>",
-      "<mongo_password>"
+      "<mongo_password>",
+      "feedback"
 ],
 ```
 
