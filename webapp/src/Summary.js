@@ -10,8 +10,21 @@ class Summary extends Component {
 		rotation: -5 / 4 * Math.PI
 	};
 
+	line_options = {
+		scales: {
+			xAxes: [{
+				type: 'time',
+				display: false
+			}]
+		},
+		legend: {
+			display: false
+		},
+	};
+
 	supported_chart_types = [
-		'horseshoe'
+		'horseshoe',
+		'line'
 	];
 
 	constructor(props) {
@@ -29,9 +42,9 @@ class Summary extends Component {
 	}
 
 	getChartObject(chartItem) {
-		if (chartItem.type == 'horseshoe') {
-			const id = 'VisualizationChart' + Summary.capitalize(chartItem.field);
+		const id = 'VisualizationChart' + Summary.capitalize(chartItem.field);
 
+		if (chartItem.type == 'horseshoe') {
 			new Chart(id, {
 				type: 'doughnut',
 				data: {
@@ -43,6 +56,20 @@ class Summary extends Component {
 					labels: chartItem.labels
 				},
 				options: this.horseshoe_options
+			});
+		} else if(chartItem.type == 'line') {
+			new Chart(id, {
+				type: 'line',
+				data: {
+					datasets: [{
+						data: chartItem.data,
+						label: [Summary.capitalize(chartItem.field)],
+						borderColor: ['#800080'],
+						fill: false
+					}],
+					labels: chartItem.labels.map(a => new Date(a))
+				},
+				options: this.line_options
 			});
 		}
 		return null;
