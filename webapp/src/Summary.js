@@ -42,7 +42,7 @@ class Summary extends Component {
 	}
 
 	getChartObject(chartItem) {
-		const id = 'VisualizationChart' + Summary.capitalize(chartItem.field);
+		const id = 'VisualizationChart' + Summary.capitalize(chartItem.field) + Summary.capitalize(chartItem.type);
 
 		if (chartItem.type == 'horseshoe') {
 			new Chart(id, {
@@ -146,7 +146,7 @@ class Summary extends Component {
 							<div key={i} className='VisualizationItem'>
 								<h2>{Summary.capitalize(i.field)}</h2>
 								{this.supported_chart_types.includes(i.type)
-									? <canvas className='VisualizationChart' id={'VisualizationChart' + Summary.capitalize(i.field)} width='800' height='400'></canvas>
+									? <canvas className='VisualizationChart' id={'VisualizationChart' + Summary.capitalize(i.field) + Summary.capitalize(i.type)} width='800' height='400'></canvas>
 									: <p>Chart type {'\'' + i.type.toString() + '\''} not supported by front-end.</p>}
 							</div>
 						);
