@@ -44,7 +44,7 @@ class Summary extends Component {
 	getChartObject(chartItem) {
 		const id = 'VisualizationChart' + Summary.capitalize(chartItem.field) + Summary.capitalize(chartItem.type);
 
-		if (chartItem.type == 'horseshoe') {
+		if (chartItem.type === 'horseshoe') {
 			new Chart(id, {
 				type: 'doughnut',
 				data: {
@@ -57,7 +57,7 @@ class Summary extends Component {
 				},
 				options: this.horseshoe_options
 			});
-		} else if(chartItem.type == 'line') {
+		} else if(chartItem.type === 'line') {
 			new Chart(id, {
 				type: 'line',
 				data: {
