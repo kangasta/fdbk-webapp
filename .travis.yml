@@ -10,12 +10,12 @@ script:
 - npm test -- --coverage
 before_deploy:
 - npm run build
-- npm pack
+- tar zcf webapp-build-$(git describe --tags).tar.gz build/
 deploy:
 - provider: releases
   api_key: $GITHUB_TOKEN
   file_glob: true
-  file: "*.tgz"
+  file: "*.tar.gz"
   skip_cleanup: true
   on:
     tags: true
