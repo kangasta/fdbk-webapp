@@ -3,9 +3,6 @@ services:
   server:
     build:
       context: .
-      args:
-          http_proxy: "${http_proxy}"
-          https_proxy: "${https_proxy}"
     entrypoint:
     - fdbk-server
     - --config-file
@@ -13,7 +10,7 @@ services:
     - --port
     - "8080"
     hostname: server
-    image: how-is-my-driving
+    image: fdbk
     restart: on-failure
     ports:
     - "8080:8080"
