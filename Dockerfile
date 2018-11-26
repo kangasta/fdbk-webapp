@@ -1,20 +1,13 @@
 FROM python:3-alpine
+ARG webapp_version="0.5.3"
 
 RUN pip install fdbk
 
-WORKDIR /app/web
-
 WORKDIR /app/
-COPY webapp/ .
-RUN apk add nodejs npm && \
-	export http_proxy="" && \
-	npm install && \
-	npm run build && \
-	mv build/* web && \
-	rm -rf node_modules && \
-	apk del nodejs npm;
+RUN wget https://github.com/kangasta/fdbk-webapp/releases/download/v${webapp_version}/webapp-build-v${webapp_version}.tar.gz && \
+	tar zxf webapp-build-v${webapp_version}.tar.gz
+WORKDIR /app/build
 
-WORKDIR /app/web
 EXPOSE 8080
 ENTRYPOINT [ "fdbk-server" ]
 CMD [ "-p", "8080" ]
