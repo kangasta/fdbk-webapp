@@ -102,6 +102,11 @@ class Summary extends Component {
 		});
 	}
 
+	getUnit(field) {
+		const unit = this.state.view.units.find(u => (u.field === field));
+		return (unit !== undefined) ? unit.unit : undefined;
+	}
+
 	render() {
 		if (this.state.view.hasOwnProperty('loading')) {
 			return (
@@ -134,7 +139,7 @@ class Summary extends Component {
 						if (i === null) return null;
 						return (
 							<p key={i} className='SummaryItem FdbkContainerHighlight'>
-								{Summary.capitalize(i.type)}<span className="SummaryItemKeyNumeric FdbkContainerHighlightKeyNumeric">{Math.round(i.value * 10) / 10}</span>{i.field}
+								{Summary.capitalize(i.type)} {i.field}<span className="SummaryItemKeyNumeric FdbkContainerHighlightKeyNumeric">{Math.round(i.value * 10) / 10}</span>{this.getUnit(i.field)}
 							</p>
 						);
 					})}
