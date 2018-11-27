@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
+import Logo from './Logo';
+
 import './FdbkContainer.css';
 
 class FdbkContainer extends Component {
@@ -7,7 +10,7 @@ class FdbkContainer extends Component {
 		return (
 			<div data-footer-text={this.props.footer_text} className="FdbkContainer">
 				{this.props.children}
-				<div className='FdbkContainerFooter Link' onClick={() => { this.props.navigate('/#/'); }}>{this.props.footer_text}</div>
+				<div className='FdbkContainerFooter Link' onClick={() => { this.props.navigate('/#/'); }}><Logo/>{this.props.footer_text}</div>
 			</div>
 		);
 	}
