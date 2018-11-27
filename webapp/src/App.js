@@ -72,10 +72,13 @@ class App extends Component {
 
 	render() {
 		return (
-			<div className="App">
-				<FdbkContainer>
-					{this.getActiveView()}
-				</FdbkContainer>
+			<div className='App'>
+				<div className='Center'>
+					<FdbkContainer navigate={this.navigate}>
+						{this.getActiveView()}
+					</FdbkContainer>
+				</div>
+				<div className='Background'/>
 			</div>
 		);
 	}

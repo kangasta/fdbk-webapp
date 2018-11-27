@@ -34,24 +34,23 @@
 .FdbkContainer {
 	border-radius: 1em;
 	background-color: #CCC;
+	color: #333;
 	margin: 2.5em 1em 3.5em;
 	padding: 1em;
 	overflow: hidden;
 }
 
-.FdbkContainer::after {
-	background-color: purple;
+.FdbkContainerFooter {
+	background-color: #800080;
 	box-sizing: border-box;
 	color: #CCC;
-	content: attr(data-footer-text);
 	display: block;
 	font-family: 'Lobster', cursive;
 	font-size: 2em;
-	margin-bottom: -1em;
-	margin-left: -1em;
-	margin-top: .5em;
+	margin: .5em -1em -1em;
 	padding: .333em 0 1em;
 	text-align: center;
+	user-select: none;
 }
 
 .FdbkContainer .Code {
@@ -66,9 +65,9 @@
 
 .FdbkContainerHighlight {
 	background-color: #EEE;
-	border-radius: 0.8em;
 	color: #666;
 	font-size: 1.25em;
+	margin: .5em -2em;
 	padding: 0.8em;
 	text-align: center;
 }

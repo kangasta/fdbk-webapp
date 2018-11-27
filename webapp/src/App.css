@@ -11,7 +11,24 @@ font-family: 'Source Code Pro', monospace;
 
 .App {
 	font-family: 'Quicksand', sans-serif;
+}
+
+.Center {
 	left: 50%;
 	position: absolute;
 	transform: translateX(-50%);
+}
+
+.Background {
+	background-color: #666;
+	height: 100vh;
+	left: 0;
+	position: fixed;
+	top: 0;
+	width: 100vw;
+	z-index: -100;
+}
+
+.Link:hover {
+	cursor: pointer;
 }
