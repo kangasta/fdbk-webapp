@@ -1,5 +1,5 @@
 FROM python:3-alpine
-ARG webapp_version="0.5.5"
+ARG webapp_version="0.6.1"
 
 RUN pip install fdbk
 
