@@ -1,0 +1,29 @@
+ul.TopicList {
+	list-style: none;
+	padding: 0;
+}
+
+li.Topic {
+	padding: 0.8em 2.0em;
+	text-align: left;
+}
+
+div.Topic {
+	font-size: 1.5em;
+	font-weight: bold;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+div.Description, div.Topic {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.Right {
+	float: right;
+	font-family: 'Lobster', cursive;
+	font-size: 1.5em;
+	margin-left: 1.5em;
+	margin-top: 1em;
+}
