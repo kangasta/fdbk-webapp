@@ -2,7 +2,7 @@ version: "2.2"
 services:
   server:
     build:
-      context: .
+      context: ./docker-build/
     entrypoint:
     - fdbk-server
     - --config-file

@@ -1,0 +1,13 @@
+FROM arm32v6/alpine
+ENV webapp_version="0.6.1"
+
+RUN apk add python3 && pip3 install fdbk
+
+WORKDIR /app/
+RUN wget https://github.com/kangasta/fdbk-webapp/releases/download/v${webapp_version}/webapp-build-v${webapp_version}.tar.gz && \
+	tar zxf webapp-build-v${webapp_version}.tar.gz || exit 0
+WORKDIR /app/build
+
+EXPOSE 8080
+ENTRYPOINT [ "fdbk-server" ]
+CMD [ "-p", "8080" ]
