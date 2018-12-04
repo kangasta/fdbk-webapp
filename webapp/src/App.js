@@ -5,7 +5,7 @@ import Form from './Form';
 import Summary from './Summary';
 import TopicList from './TopicList';
 
-import './App.css';
+import './style/App.css';
 
 class App extends Component {
 	constructor(props) {

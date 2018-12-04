@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import './TopicList.css';
+import './style/TopicList.css';
 
 class TopicList extends Component {
 	constructor(props) {

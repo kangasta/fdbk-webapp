@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import CallbackTimer from './CallbackTimer';
 
-import './Form.css';
+import './style/Form.css';
 
 class Form extends Component {
 	constructor(props) {

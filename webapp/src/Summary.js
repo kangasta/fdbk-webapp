@@ -2,7 +2,7 @@ import Chart from 'chart.js';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import './Summary.css';
+import './style/Summary.css';
 
 class Summary extends Component {
 	horseshoe_options = {

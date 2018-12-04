@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import './CallbackTimer.css';
+import './style/CallbackTimer.css';
 
 class CallbackTimer extends Component {
 	constructor(props) {
