@@ -58,6 +58,10 @@ class Form extends Component {
 	}
 
 	textOnChange(event) {
+		const element = event.target;
+		setTimeout(() => {
+			element.style.cssText = 'height: ' + element.scrollHeight + 'px';
+		}, 0);
 		this.setState({
 			'text': event.target.value,
 		});
@@ -159,9 +163,13 @@ class Form extends Component {
 						</span>
 					))}
 				</div>
-				<div className="Stars">
+				<div className="Text">
 					<h2>Text</h2>
-					<textarea name="text" onChange={this.textOnChange}></textarea>
+					<textarea
+						name="text"
+						onChange={this.textOnChange}
+						placeholder='Write your answer here'
+						rows='1'></textarea>
 				</div>
 				{this.props.requires_token ?
 					<div className="Token">
