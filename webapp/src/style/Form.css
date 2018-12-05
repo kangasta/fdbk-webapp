@@ -8,7 +8,10 @@ input[type=text],textarea {
 }
 
 textarea {
-	resize: vertical;
+	height: auto;
+	overflow: hidden;
+	resize: none;
+	transition: all 0.125s;
 }
 
 button {
