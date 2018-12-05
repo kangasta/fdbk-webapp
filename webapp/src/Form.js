@@ -30,7 +30,6 @@ class Form extends Component {
 		this.starsOnClick = this.starsOnClick.bind(this);
 		this.submitOnClick = this.submitOnClick.bind(this);
 		this.textOnChange = this.textOnChange.bind(this);
-		this.tokenOnChange = this.tokenOnChange.bind(this);
 	}
 
 	componentDidMount() {
@@ -59,17 +58,13 @@ class Form extends Component {
 
 	textOnChange(event) {
 		const element = event.target;
-		setTimeout(() => {
-			element.style.cssText = 'height: ' + element.scrollHeight + 'px';
-		}, 0);
+		if (element.type === 'textarea') {
+			setTimeout(() => {
+				element.style.cssText = 'height: ' + element.scrollHeight + 'px';
+			}, 0);
+		}
 		this.setState({
-			'text': event.target.value,
-		});
-	}
-
-	tokenOnChange(event) {
-		this.setState({
-			'token': event.target.value,
+			[element.name]: element.value,
 		});
 	}
 
@@ -177,7 +172,7 @@ class Form extends Component {
 						<input
 							type="text"
 							name="token"
-							onChange={this.tokenOnChange}
+							onChange={this.textOnChange}
 							value={this.state.token}
 						/>
 					</div> : null}
