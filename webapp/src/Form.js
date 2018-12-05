@@ -19,8 +19,7 @@ class Form extends Component {
 		}
 
 		this.state = {
-			'stars': null,
-			'text': '',
+			'fields': {},
 			'token': token,
 			'view': {
 				'loading': 'Waiting for feedback topic data from server'
@@ -43,7 +42,14 @@ class Form extends Component {
 				if (response_json.hasOwnProperty('error') && response_json.error) {
 					throw new Error(response_json.error);
 				}
-				this.setState({view: response_json});
+				const fields = response_json.fields.reduce((obj, field) => {
+					obj[field] = null;
+					return obj;
+				},{});
+				this.setState({
+					fields: fields,
+					view: response_json
+				});
 			})
 			.catch((error_msg) => {
 				this.setState({view: {error: error_msg.toString()}});
@@ -51,9 +57,10 @@ class Form extends Component {
 	}
 
 	starsOnClick(event) {
-		this.setState({
-			'stars': Number(event.target.value)
-		});
+		const element = event.target;
+		this.setState(old => ({
+			fields: Object.assign(old.fields, {'stars': Number(element.value)})
+		}));
 	}
 
 	textOnChange(event) {
@@ -63,9 +70,9 @@ class Form extends Component {
 				element.style.cssText = 'height: ' + element.scrollHeight + 'px';
 			}, 0);
 		}
-		this.setState({
-			[element.name]: element.value,
-		});
+		this.setState(old => ({
+			fields: Object.assign(old.fields, {[element.name]: element.value})
+		}));
 	}
 
 	submitOnClick(/*event*/) {
@@ -77,16 +84,11 @@ class Form extends Component {
 
 		fetch('/add/data/' + this.state.view.topic + '?token=' + this.state.token, {
 			method: 'POST',
-			// TODO, This is for initial demo, please parametrize later
-			body: JSON.stringify({
-				stars: this.state.stars,
-				text: this.state.text
-			}),
+			body: JSON.stringify(this.state.fields),
 			headers:{
 				'Content-Type': 'application/json'
 			}
 		})
-		// TODO: should chacnge api to return JSON later
 			.then((response) => response.json())
 			.then((response_json) => {
 				if (response_json.hasOwnProperty('error') && response_json.error) {
@@ -115,7 +117,7 @@ class Form extends Component {
 			switch (unit_obj.unit) {
 			case 'stars':
 				return (
-					<div className="InputRow">
+					<div key={field} className="InputRow">
 						<h2>Stars</h2>
 						{[...Array(5).keys()].map(i => (
 							<span key={i} className="Star">
@@ -133,7 +135,7 @@ class Form extends Component {
 				);
 			case 'text':
 				return (
-					<div className="InputRow">
+					<div key={field} className="InputRow">
 						<h2>Text</h2>
 						<textarea
 							name="text"
@@ -145,7 +147,7 @@ class Form extends Component {
 			}
 		}
 		return (
-			<div className="InputRow">
+			<div key={field} className="InputRow">
 				<h2>{capitalize(field)}</h2>
 				<input
 					type="text"
