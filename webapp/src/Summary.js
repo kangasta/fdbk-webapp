@@ -137,8 +137,9 @@ class Summary extends Component {
 					</p>
 					{this.state.view.summaries.map(i => {
 						if (i === null) return null;
+						// TODO: Nan warning
 						return (
-							<p key={i} className='SummaryItem FdbkContainerHighlight'>
+							<p key={i.type.toString() + i.field.toString()} className='SummaryItem FdbkContainerHighlight'>
 								{Summary.capitalize(i.type)} {i.field}<span className="SummaryItemKeyNumeric FdbkContainerHighlightKeyNumeric">{Math.round(i.value * 10) / 10}</span>{this.getUnit(i.field)}
 							</p>
 						);
@@ -148,7 +149,7 @@ class Summary extends Component {
 					{this.state.view.visualizations.map(i => {
 						if (i === null) return null;
 						return (
-							<div key={i} className='VisualizationItem'>
+							<div key={i.type.toString() + i.field.toString()} className='VisualizationItem'>
 								<h2>{Summary.capitalize(i.field)}</h2>
 								{this.supported_chart_types.includes(i.type)
 									? <canvas className='VisualizationChart' id={'VisualizationChart' + Summary.capitalize(i.field) + Summary.capitalize(i.type)} width='800' height='400'></canvas>
