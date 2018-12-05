@@ -103,6 +103,59 @@ class Form extends Component {
 			});
 	}
 
+	getInputForField(field) {
+		if (!this.state.view.hasOwnProperty('topic')) return undefined;
+
+		const capitalize = (str) => {
+			return (str.charAt(0).toUpperCase() + str.slice(1));
+		};
+
+		const unit_obj = this.state.view.hasOwnProperty('units') ? this.state.view.units.find(i => (i.field === field)) : undefined;
+		if (unit_obj) {
+			switch (unit_obj.unit) {
+			case 'stars':
+				return (
+					<div className="InputRow">
+						<h2>Stars</h2>
+						{[...Array(5).keys()].map(i => (
+							<span key={i} className="Star">
+								<input
+									key={i+1}
+									type="radio"
+									name="stars"
+									onClick={this.starsOnClick}
+									value={i+1}
+								/>
+								<label htmlFor={i+1}>{i+1}</label>
+							</span>
+						))}
+					</div>
+				);
+			case 'text':
+				return (
+					<div className="InputRow">
+						<h2>Text</h2>
+						<textarea
+							name="text"
+							onChange={this.textOnChange}
+							placeholder='Write your input here'
+							rows='1'></textarea>
+					</div>
+				);
+			}
+		}
+		return (
+			<div className="InputRow">
+				<h2>{capitalize(field)}</h2>
+				<input
+					type="text"
+					name={field}
+					onChange={this.textOnChange}
+					placeholder='Write your input here'></input>
+			</div>
+		);
+	}
+
 	render() {
 		if (this.state.view.hasOwnProperty('loading')) {
 			return (
@@ -142,30 +195,7 @@ class Form extends Component {
 			<div className="Form">
 				<h1>{this.state.view.topic}</h1>
 				<p>{this.state.view.description}</p>
-				<div className="Stars">
-					<h2>Stars</h2>
-					{/* TODO: https://codepen.io/jamesbarnett/pen/vlpkh */}
-					{[...Array(5).keys()].map(i => (
-						<span key={i} className="Star">
-							<input
-								key={i+1}
-								type="radio"
-								name="stars"
-								onClick={this.starsOnClick}
-								value={i+1}
-							/>
-							<label htmlFor={i+1}>{i+1}</label>
-						</span>
-					))}
-				</div>
-				<div className="Text">
-					<h2>Text</h2>
-					<textarea
-						name="text"
-						onChange={this.textOnChange}
-						placeholder='Write your answer here'
-						rows='1'></textarea>
-				</div>
+				{this.state.view.fields.map(field => this.getInputForField(field))}
 				{this.props.requires_token ?
 					<div className="Token">
 						<h2>Pre-shared token</h2>
