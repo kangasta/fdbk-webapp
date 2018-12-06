@@ -117,14 +117,14 @@ class Form extends Component {
 			switch (unit_obj.unit) {
 			case 'stars':
 				return (
-					<div key={field} className="InputRow">
+					<div key={field} className='InputRow Stars'>
 						<h2>Stars</h2>
 						{[...Array(5).keys()].map(i => (
-							<span key={i} className="Star">
+							<span key={i} className='Star'>
 								<input
 									key={i+1}
-									type="radio"
-									name="stars"
+									type='radio'
+									name='stars'
 									onClick={this.starsOnClick}
 									value={i+1}
 								/>
@@ -135,10 +135,10 @@ class Form extends Component {
 				);
 			case 'text':
 				return (
-					<div key={field} className="InputRow">
+					<div key={field} className='InputRow Text'>
 						<h2>Text</h2>
 						<textarea
-							name="text"
+							name='text'
 							onChange={this.textOnChange}
 							placeholder='Write your input here'
 							rows='1'></textarea>
@@ -147,10 +147,10 @@ class Form extends Component {
 			}
 		}
 		return (
-			<div key={field} className="InputRow">
+			<div key={field} className={'InputRow ' + capitalize(field)}>
 				<h2>{capitalize(field)}</h2>
 				<input
-					type="text"
+					type='text'
 					name={field}
 					onChange={this.textOnChange}
 					placeholder='Write your input here'></input>
@@ -161,7 +161,7 @@ class Form extends Component {
 	render() {
 		if (this.state.view.hasOwnProperty('loading')) {
 			return (
-				<div className="Form Loading">
+				<div className='Form Loading'>
 					<h1>Loading</h1>
 					<p>{this.state.view.loading.toString()}</p>
 				</div>
@@ -170,7 +170,7 @@ class Form extends Component {
 
 		if (this.state.view.hasOwnProperty('error')) {
 			return (
-				<div className="Form Error">
+				<div className='Form Error'>
 					<h1>Error</h1>
 					<p>{this.state.view.error.toString()}</p>
 				</div>
@@ -179,7 +179,7 @@ class Form extends Component {
 
 		if (this.state.view.hasOwnProperty('success')) {
 			return (
-				<div className="Form Success">
+				<div className='Form Success'>
 					<h1>Success</h1>
 					<p>{this.state.view.success.toString()}</p>
 					<CallbackTimer
@@ -194,21 +194,21 @@ class Form extends Component {
 
 		// TODO, This is for initial demo, please parametrize later
 		return (
-			<div className="Form">
+			<div className='Form'>
 				<h1>{this.state.view.topic}</h1>
 				<p>{this.state.view.description}</p>
 				{this.state.view.fields.map(field => this.getInputForField(field))}
 				{this.props.requires_token ?
-					<div className="Token">
+					<div className='Token'>
 						<h2>Pre-shared token</h2>
 						<input
-							type="text"
-							name="token"
+							type='text'
+							name='token'
 							onChange={this.textOnChange}
 							value={this.state.token}
 						/>
 					</div> : null}
-				<div className="Submit">
+				<div className='Submit'>
 					<button onClick={this.submitOnClick}>Submit</button>
 				</div>
 				{/* Output current state for debugging: <p>{JSON.stringify(this.state, null, 2)}</p> */}
