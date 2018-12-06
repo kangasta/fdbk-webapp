@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 
 import Summary from '../Summary';
 
@@ -13,11 +13,11 @@ describe('Summary',() => {
 		const fetch_promise = new Promise((resolve) => setTimeout(() => { resolve({json: () => ({error: 'Failing fetch() mock'})}); }), 1000);
 		global.fetch = jest.fn(() => fetch_promise);
 
-		const wrapper = mount(<Summary topic='topic'/>);
+		const wrapper = shallow(<Summary topic='topic'/>);
 		expect(wrapper.find('.Summary').hasClass('Loading')).toBe(true);
 
 		jest.runAllTimers();
-		fetch_promise.then(async () => {
+		return fetch_promise.then(async () => {
 			await wrapper.instance().componentDidMount();
 			expect(wrapper.find('.Summary').hasClass('Error')).toBe(true);
 		});
