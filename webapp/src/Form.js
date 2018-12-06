@@ -126,29 +126,35 @@ class Form extends Component {
 				return (
 					<div key={field} className='InputRow Stars'>
 						<h2>Stars</h2>
-						{[...Array(5).keys()].map(i => (
-							<span key={i} className='Star'>
-								<input
-									key={i+1}
-									type='radio'
-									name='stars'
-									onClick={this.starsOnClick}
-									value={i+1}
-								/>
-								<label htmlFor={i+1}>{i+1}</label>
-							</span>
-						))}
+						<div className='FdbkContainerHighlight'>
+							{[...Array(5).keys()].map(i => (
+								<span key={i} className='Star FdbkContainerHighlightKeyNumeric'>
+									<input
+										key={i+1}
+										id={i+1}
+										type='radio'
+										name='stars'
+										onClick={this.starsOnClick}
+										value={i+1}
+									/>
+									<label
+										htmlFor={i+1}>{i+1}</label>
+								</span>
+							))}
+						</div>
 					</div>
 				);
 			case 'text':
 				return (
 					<div key={field} className='InputRow Text'>
 						<h2>Text</h2>
-						<textarea
-							name='text'
-							onChange={this.textOnChange}
-							placeholder='Write your input here'
-							rows='1'></textarea>
+						<div className='FdbkContainerHighlight'>
+							<textarea
+								name='text'
+								onChange={this.textOnChange}
+								placeholder='Write your input here'
+								rows='1'></textarea>
+						</div>
 					</div>
 				);
 			}
@@ -156,11 +162,13 @@ class Form extends Component {
 		return (
 			<div key={field} className={'InputRow ' + capitalize(field)}>
 				<h2>{capitalize(field)}</h2>
-				<input
-					type='text'
-					name={field}
-					onChange={this.textOnChange}
-					placeholder='Write your input here'></input>
+				<div className='FdbkContainerHighlight'>
+					<input
+						type='text'
+						name={field}
+						onChange={this.textOnChange}
+						placeholder='Write your input here'></input>
+				</div>
 			</div>
 		);
 	}
@@ -208,15 +216,17 @@ class Form extends Component {
 				{this.props.requires_token ?
 					<div className='Token'>
 						<h2>Pre-shared token</h2>
-						<input
-							type='text'
-							name='token'
-							onChange={this.textOnChange}
-							value={this.state.token}
-						/>
+						<div className='FdbkContainerHighlight'>
+							<input
+								type='text'
+								name='token'
+								onChange={this.textOnChange}
+								value={this.state.token}
+							/>
+						</div>
 					</div> : null}
 				<div className='Submit'>
-					<button onClick={this.submitOnClick}>Submit</button>
+					<button className='Link' onClick={this.submitOnClick}>Submit</button>
 				</div>
 				{/* Output current state for debugging: <p>{JSON.stringify(this.state, null, 2)}</p> */}
 			</div>
