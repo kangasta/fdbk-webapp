@@ -70,19 +70,26 @@ class Form extends Component {
 				element.style.cssText = 'height: ' + element.scrollHeight + 'px';
 			}, 0);
 		}
+		if (element.name === 'token') {
+			this.setState({token: element.value});
+			return;
+		}
 		this.setState(old => ({
 			fields: Object.assign(old.fields, {[element.name]: element.value})
 		}));
 	}
 
 	submitOnClick(/*event*/) {
+		const token_parameter = this.state.token ? '?token=' + this.state.token : '';
+		const url = '/add/data/' + this.state.view.topic + token_parameter;
+
 		this.setState({
 			'view': {
 				'loading': 'Submitting feedback to server'
 			}
 		});
 
-		fetch('/add/data/' + this.state.view.topic + '?token=' + this.state.token, {
+		fetch(url, {
 			method: 'POST',
 			body: JSON.stringify(this.state.fields),
 			headers:{
