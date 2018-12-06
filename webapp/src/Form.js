@@ -157,6 +157,7 @@ class Form extends Component {
 						</div>
 					</div>
 				);
+			default:
 			}
 		}
 		return (
