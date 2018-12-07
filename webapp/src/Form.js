@@ -32,11 +32,11 @@ class Form extends Component {
 	}
 
 	componentDidMount() {
-		if (!this.props.topic) {
+		if (!this.props.topic_id) {
 			this.setState({view: {error: 'Form created without topic'}});
 			return;
 		}
-		return fetch('/get/topic/' + this.props.topic)
+		return fetch('/get/topic/' + this.props.topic_id)
 			.then((response) => response.json())
 			.then((response_json) => {
 				if (response_json.hasOwnProperty('error') && response_json.error) {
@@ -81,7 +81,7 @@ class Form extends Component {
 
 	submitOnClick(/*event*/) {
 		const token_parameter = this.state.token ? '?token=' + this.state.token : '';
-		const url = '/add/data/' + this.state.view.topic + token_parameter;
+		const url = '/add/data/' + this.state.view.id + token_parameter;
 
 		this.setState({
 			'view': {
@@ -113,7 +113,7 @@ class Form extends Component {
 	}
 
 	getInputForField(field) {
-		if (!this.state.view.hasOwnProperty('topic')) return undefined;
+		if (!this.state.view.hasOwnProperty('id')) return undefined;
 
 		const capitalize = (str) => {
 			return (str.charAt(0).toUpperCase() + str.slice(1));
@@ -199,7 +199,7 @@ class Form extends Component {
 					<h1>Success</h1>
 					<p>{this.state.view.success.toString()}</p>
 					<CallbackTimer
-						callback={()=>{this.props.navigate('/#/summary/' + this.props.topic);}}
+						callback={()=>{this.props.navigate('/#/summary/' + this.props.topic_id);}}
 						time={5000}
 						time_className='FdbkContainerHighlightKeyNumeric'
 						text='Redirecting to results summary in '
@@ -211,7 +211,7 @@ class Form extends Component {
 		// TODO, This is for initial demo, please parametrize later
 		return (
 			<div className='Form'>
-				<h1>{this.state.view.topic}</h1>
+				<h1>{this.state.view.name}</h1>
 				<p>{this.state.view.description}</p>
 				{this.state.view.fields.map(field => this.getInputForField(field))}
 				{this.props.requires_token ?
@@ -238,13 +238,13 @@ class Form extends Component {
 // TODO: This is for initial demo, please remove later
 Form.defaultProps = {
 	navigate: ()=>undefined,
-	topic: '',
+	topic_id: '',
 	requires_token: false
 };
 
 Form.propTypes = {
 	navigate: PropTypes.func,
-	topic: PropTypes.string,
+	topic_id: PropTypes.string,
 	requires_token: PropTypes.bool
 };
 

@@ -76,11 +76,11 @@ class Summary extends Component {
 	}
 
 	componentDidMount() {
-		if (!this.props.topic) {
+		if (!this.props.topic_id) {
 			this.setState({view: {error: 'Summary created without topic'}});
 			return;
 		}
-		return fetch('/get/summary/' + this.props.topic)
+		return fetch('/get/summary/' + this.props.topic_id)
 			.then((response) => response.json())
 			.then((response_json) => {
 				if (response_json.hasOwnProperty('error') && response_json.error) {
@@ -166,11 +166,11 @@ class Summary extends Component {
 
 // TODO: This is for initial demo, please remove later
 Summary.defaultProps = {
-	topic: '',
+	topic_id: '',
 };
 
 Summary.propTypes = {
-	topic: PropTypes.string,
+	topic_id: PropTypes.string,
 };
 
 export default Summary;

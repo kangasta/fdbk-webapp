@@ -13,7 +13,7 @@ describe('Summary',() => {
 		const fetch_promise = new Promise((resolve) => setTimeout(() => { resolve({json: () => ({error: 'Failing fetch() mock'})}); }), 1000);
 		global.fetch = jest.fn(() => fetch_promise);
 
-		const wrapper = shallow(<Summary topic='topic'/>);
+		const wrapper = shallow(<Summary topic_id='topic'/>);
 		expect(wrapper.find('.Summary').hasClass('Loading')).toBe(true);
 
 		jest.runAllTimers();

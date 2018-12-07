@@ -1,7 +1,7 @@
 FROM arm32v6/alpine
-ENV webapp_version="0.6.1"
+ENV webapp_version="0.7.0"
 
-RUN apk add python3 && pip3 install fdbk
+RUN apk add python3 && pip3 install fdbk==$(echo ${webapp_version} | sed -Ee "s#(.\..\.).#\1*#")
 
 WORKDIR /app/
 RUN wget https://github.com/kangasta/fdbk-webapp/releases/download/v${webapp_version}/webapp-build-v${webapp_version}.tar.gz && \

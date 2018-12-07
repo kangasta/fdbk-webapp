@@ -56,9 +56,9 @@ class TopicList extends Component {
 				<ul className='TopicList'>
 					{this.state.view.topics.map(topic => (
 						<li key={topic} className="Topic FdbkContainerHighlight">
-							<span className="Right Link" onClick={()=>{this.props.navigate('/#/summary/' + topic.topic);}}>summary</span>
-							{topic.form_submissions ? <span className="Right Link" onClick={()=>{this.props.navigate('/#/form/' + topic.topic);}}>form</span> : null}
-							<div className='Topic'>{topic.topic}</div>
+							<span className="Right Link" onClick={()=>{this.props.navigate('/#/summary/' + topic.id);}}>summary</span>
+							{topic.form_submissions ? <span className="Right Link" onClick={()=>{this.props.navigate('/#/form/' + topic.id);}}>form</span> : null}
+							<div className='Topic'>{topic.name}</div>
 							<div className='Description'>{topic.description ? topic.description : 'No description available'}</div>
 						</li>
 					))}

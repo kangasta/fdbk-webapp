@@ -23,11 +23,11 @@ class App extends Component {
 	getActiveView() {
 		if (this.state.view.hasOwnProperty('form')) {
 			return (
-				<Form navigate={this.navigate} topic={this.state.view.form}/>
+				<Form navigate={this.navigate} topic_id={this.state.view.form}/>
 			);
 		} else if (this.state.view.hasOwnProperty('summary')) {
 			return (
-				<Summary topic={this.state.view.summary}/>
+				<Summary topic_id={this.state.view.summary}/>
 			);
 		} else {
 			return (
