@@ -1,6 +1,7 @@
 import Chart from 'chart.js';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
 import './style/Summary.css';
 
@@ -107,6 +108,32 @@ class Summary extends Component {
 		return (unit !== undefined) ? unit.unit : undefined;
 	}
 
+	getSummaryComponent(summary_item) {
+		var intro=null, hilight=null, detail=null;
+
+		switch(summary_item.type) {
+		case 'last_truthy':
+		case 'last_falsy':
+			if (summary_item.value === null) return null;
+			intro = 'Last ' + summary_item.field + ' ';
+			detail = moment(summary_item.value).fromNow();
+			break;
+		default:
+			intro = Summary.capitalize(summary_item.type).replace('_', ' ') + ' ' + summary_item.field;
+			hilight = (
+				<span className="SummaryItemKeyNumeric FdbkContainerHighlightKeyNumeric">{Math.round(summary_item.value * 10) / 10}</span>
+			);
+			detail = this.getUnit(summary_item.field);
+		}
+		return (
+			<p key={summary_item.type.toString() + summary_item.field.toString()} className='SummaryItem FdbkContainerHighlight'>
+				{intro}
+				{hilight}
+				{detail}
+			</p>
+		);
+	}
+
 	render() {
 		if (this.state.view.hasOwnProperty('loading')) {
 			return (
@@ -138,11 +165,7 @@ class Summary extends Component {
 					{this.state.view.summaries.map(i => {
 						if (i === null) return null;
 						// TODO: Nan warning
-						return (
-							<p key={i.type.toString() + i.field.toString()} className='SummaryItem FdbkContainerHighlight'>
-								{Summary.capitalize(i.type)} {i.field}<span className="SummaryItemKeyNumeric FdbkContainerHighlightKeyNumeric">{Math.round(i.value * 10) / 10}</span>{this.getUnit(i.field)}
-							</p>
-						);
+						return this.getSummaryComponent(i);
 					})}
 				</div>
 				<div className='Visualizations'>
