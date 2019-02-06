@@ -1,5 +1,5 @@
 FROM arm32v6/alpine
-ENV webapp_version="0.7.1"
+ENV webapp_version="0.8.0"
 
 RUN apk add python3 && pip3 install fdbk==$(echo ${webapp_version} | sed -Ee "s#(.\..\.).#\1*#")
 
