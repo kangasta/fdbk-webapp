@@ -159,6 +159,12 @@ class Summary extends Component {
 				<h1>{this.state.view.topic}</h1>
 				<p>{this.state.view.description}</p>
 				<div className='Summaries'>
+					{this.state.view.warnings.map(i => (
+						<p key={i} className='SummaryItem FdbkContainerHighlight DarkHighlight'>
+							<span className='FdbkContainerHighlightTitle'>Warning!</span><br/>
+							{i}
+						</p>
+					))}
 					<p className='SummaryItem FdbkContainerHighlight'>
 						<span className="SummaryItemKeyNumeric FdbkContainerHighlightKeyNumeric">{this.state.view.num_entries}</span>entries
 					</p>
