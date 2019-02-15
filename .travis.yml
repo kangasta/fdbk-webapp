@@ -6,7 +6,7 @@ install:
 - cd webapp
 - npm install
 script:
-- ./node_modules/.bin/eslint .
+- npm run lint
 - npm test -- --coverage
 before_deploy:
 - npm run build
