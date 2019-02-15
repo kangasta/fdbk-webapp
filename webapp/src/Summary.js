@@ -1,33 +1,12 @@
-import Chart from 'chart.js';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
+import ChartWrapper from './ChartWrapper';
+import { capitalize } from './Utils';
 import './style/Summary.css';
 
 class Summary extends Component {
-	horseshoe_options = {
-		circumference: 3 / 2 * Math.PI,
-		rotation: -5 / 4 * Math.PI
-	};
-
-	line_options = {
-		scales: {
-			xAxes: [{
-				type: 'time',
-				display: false
-			}]
-		},
-		legend: {
-			display: false
-		},
-	};
-
-	supported_chart_types = [
-		'horseshoe',
-		'line'
-	];
-
 	constructor(props) {
 		super(props);
 
@@ -38,49 +17,19 @@ class Summary extends Component {
 		};
 	}
 
-	static capitalize(str_in) {
-		return (str_in.charAt(0).toUpperCase() + str_in.slice(1));
-	}
-
-	getChartObject(chartItem) {
-		const id = 'VisualizationChart' + Summary.capitalize(chartItem.field) + Summary.capitalize(chartItem.type);
-
-		if (chartItem.type === 'horseshoe') {
-			new Chart(id, {
-				type: 'doughnut',
-				data: {
-					datasets: [{
-						data: chartItem.data,
-						backgroundColor: ['#300080', '#580080', '#800080', '#800058', '#800030'],
-						borderColor: ['#CCC', '#CCC', '#CCC', '#CCC', '#CCC']
-					}],
-					labels: chartItem.labels
-				},
-				options: this.horseshoe_options
-			});
-		} else if(chartItem.type === 'line') {
-			new Chart(id, {
-				type: 'line',
-				data: {
-					datasets: [{
-						data: chartItem.data,
-						label: [Summary.capitalize(chartItem.field)],
-						borderColor: ['#800080'],
-						fill: false
-					}],
-					labels: chartItem.labels.map(a => new Date(a))
-				},
-				options: this.line_options
-			});
-		}
-		return null;
-	}
-
 	componentDidMount() {
 		if (!this.props.topic_id) {
 			this.setState({view: {error: 'Summary created without topic'}});
 			return;
 		}
+		this.setState({
+			updateIntervalId: setInterval(()=>{
+				this.update();
+			}, 3e3)});
+		return this.update();
+	}
+
+	update() {
 		return fetch('/get/summary/' + this.props.topic_id)
 			.then((response) => response.json())
 			.then((response_json) => {
@@ -92,15 +41,6 @@ class Summary extends Component {
 			.catch((error_msg) => {
 				this.setState({view: {error: error_msg.toString()}});
 			});
-	}
-
-	componentDidUpdate() {
-		// TODO, This is for initial demo, please parametrize later
-		if (!this.state.view.visualizations) return;
-		this.state.view.visualizations.map(i => {
-			if (i === null) return null;
-			return this.getChartObject(i);
-		});
 	}
 
 	getUnit(field) {
@@ -119,7 +59,7 @@ class Summary extends Component {
 			detail = moment(summary_item.value).fromNow();
 			break;
 		default:
-			intro = Summary.capitalize(summary_item.type).replace('_', ' ') + ' ' + summary_item.field;
+			intro = capitalize(summary_item.type).replace('_', ' ') + ' ' + summary_item.field;
 			hilight = (
 				<span className="SummaryItemKeyNumeric FdbkContainerHighlightKeyNumeric">{Math.round(summary_item.value * 10) / 10}</span>
 			);
@@ -179,10 +119,8 @@ class Summary extends Component {
 						if (i === null) return null;
 						return (
 							<div key={i.type.toString() + i.field.toString()} className='VisualizationItem'>
-								<h2>{Summary.capitalize(i.field)}</h2>
-								{this.supported_chart_types.includes(i.type)
-									? <canvas className='VisualizationChart' id={'VisualizationChart' + Summary.capitalize(i.field) + Summary.capitalize(i.type)} width='800' height='400'></canvas>
-									: <p>Chart type {'\'' + i.type.toString() + '\''} not supported by front-end.</p>}
+								<h2>{capitalize(i.field)}</h2>
+								<ChartWrapper {...i}/>
 							</div>
 						);
 					})}
