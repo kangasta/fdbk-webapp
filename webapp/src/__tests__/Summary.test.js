@@ -16,7 +16,7 @@ describe('Summary',() => {
 		const wrapper = shallow(<Summary topic_id='topic'/>);
 		expect(wrapper.find('.Summary').hasClass('Loading')).toBe(true);
 
-		jest.runAllTimers();
+		jest.runOnlyPendingTimers();
 		return fetch_promise.then(async () => {
 			await wrapper.instance().componentDidMount();
 			expect(wrapper.find('.Summary').hasClass('Error')).toBe(true);
