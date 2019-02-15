@@ -25,7 +25,7 @@ class Summary extends Component {
 		this.setState({
 			updateIntervalId: setInterval(()=>{
 				this.update();
-			}, 3e3)});
+			}, this.props.update_interval)});
 		return this.update();
 	}
 
@@ -134,10 +134,12 @@ class Summary extends Component {
 // TODO: This is for initial demo, please remove later
 Summary.defaultProps = {
 	topic_id: '',
+	update_interval: 30e3,
 };
 
 Summary.propTypes = {
 	topic_id: PropTypes.string,
+	update_interval: PropTypes.number,
 };
 
 export default Summary;
