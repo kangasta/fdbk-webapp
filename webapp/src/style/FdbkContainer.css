@@ -87,3 +87,13 @@
 	font-size: 1.5em;
 	font-family: 'Lobster', cursive;
 }
+
+.CSStatus .Icon {
+	float: left;
+	font-size: 5em;
+	margin-right: 0.25em;
+}
+
+.CSStatus h1, .CSStatus p {
+	overflow: auto;
+}

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import { CSValidatorChanger } from 'chillisalmon';
+
 import CallbackTimer from './CallbackTimer';
 
 import './style/Form.css';
@@ -174,62 +176,48 @@ class Form extends Component {
 		);
 	}
 
+	getContent() {
+		try {
+			return (
+				<div className='Form'>
+					<h1>{this.state.view.name}</h1>
+					<p>{this.state.view.description}</p>
+					{this.state.view.fields.map(field => this.getInputForField(field))}
+					{this.props.requires_token ?
+						<div className='Token'>
+							<h2>Pre-shared token</h2>
+							<div className='FdbkContainerHighlight'>
+								<input
+									type='text'
+									name='token'
+									onChange={this.textOnChange}
+									value={this.state.token}
+								/>
+							</div>
+						</div> : null}
+					<div className='Submit'>
+						<button className='Link' onClick={this.submitOnClick}>Submit</button>
+					</div>
+					{/* Output current state for debugging: <p>{JSON.stringify(this.state, null, 2)}</p> */}
+				</div>
+			);
+		} catch(e) {
+			return null;
+		}
+	}
+
 	render() {
-		if (this.state.view.hasOwnProperty('loading')) {
-			return (
-				<div className='Form Loading'>
-					<h1>Loading</h1>
-					<p>{this.state.view.loading.toString()}</p>
-				</div>
-			);
-		}
-
-		if (this.state.view.hasOwnProperty('error')) {
-			return (
-				<div className='Form Error'>
-					<h1>Error</h1>
-					<p>{this.state.view.error.toString()}</p>
-				</div>
-			);
-		}
-
-		if (this.state.view.hasOwnProperty('success')) {
-			return (
-				<div className='Form Success'>
-					<h1>Success</h1>
-					<p>{this.state.view.success.toString()}</p>
-					<CallbackTimer
+		return (
+			<div className='Form'>
+				<CSValidatorChanger error={this.state.view.error} loading={this.state.view.loading} success={this.state.view.success}>
+					{this.getContent()}
+				</CSValidatorChanger>
+				{this.state.view.success === undefined ? null : <CallbackTimer
 						callback={()=>{this.props.navigate('/#/summary/' + this.props.topic_id);}}
 						time={5000}
 						time_className='FdbkContainerHighlightKeyNumeric'
 						text='Redirecting to results summary in '
-						text_className='FdbkContainerHighlight'/>
-				</div>
-			);
-		}
-
-		// TODO, This is for initial demo, please parametrize later
-		return (
-			<div className='Form'>
-				<h1>{this.state.view.name}</h1>
-				<p>{this.state.view.description}</p>
-				{this.state.view.fields.map(field => this.getInputForField(field))}
-				{this.props.requires_token ?
-					<div className='Token'>
-						<h2>Pre-shared token</h2>
-						<div className='FdbkContainerHighlight'>
-							<input
-								type='text'
-								name='token'
-								onChange={this.textOnChange}
-								value={this.state.token}
-							/>
-						</div>
-					</div> : null}
-				<div className='Submit'>
-					<button className='Link' onClick={this.submitOnClick}>Submit</button>
-				</div>
-				{/* Output current state for debugging: <p>{JSON.stringify(this.state, null, 2)}</p> */}
+						text_className='FdbkContainerHighlight'/>}
 			</div>
 		);
 	}
