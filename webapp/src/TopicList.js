@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
+import { CSValidatorChanger } from 'chillisalmon';
+
 import './style/TopicList.css';
 
 class TopicList extends Component {
@@ -32,38 +35,24 @@ class TopicList extends Component {
 	}
 
 	render() {
-		if (this.state.view.hasOwnProperty('loading')) {
-			return (
-				<div className="TopicList Loading">
-					<h1>Loading</h1>
-					<p>{this.state.view.loading.toString()}</p>
-				</div>
-			);
-		}
-
-		if (this.state.view.hasOwnProperty('error')) {
-			return (
-				<div className="TopicList Error">
-					<h1>Error</h1>
-					<p>{this.state.view.error.toString()}</p>
-				</div>
-			);
-		}
+		const topics = this.state.view.topics || [];
 
 		return (
-			<div className="TopicList">
-				<h1>Topics</h1>
-				<ul className='TopicList'>
-					{this.state.view.topics.map(topic => (
-						<li key={topic} className="Topic FdbkContainerHighlight">
-							<span className="Right Link" onClick={()=>{this.props.navigate('/#/summary/' + topic.id);}}>summary</span>
-							{topic.form_submissions ? <span className="Right Link" onClick={()=>{this.props.navigate('/#/form/' + topic.id);}}>form</span> : null}
-							<div className='Topic'>{topic.name}</div>
-							<div className='Description'>{topic.description ? topic.description : 'No description available'}</div>
-						</li>
-					))}
-				</ul>
-			</div>
+			<CSValidatorChanger error={this.state.view.error} loading={this.state.view.loading}>
+				<div className="TopicList">
+					<h1>Topics</h1>
+					<ul className='TopicList'>
+						{topics.map(topic => (
+							<li key={topic} className="Topic FdbkContainerHighlight">
+								<span className="Right Link" onClick={()=>{this.props.navigate('/#/summary/' + topic.id);}}>summary</span>
+								{topic.form_submissions ? <span className="Right Link" onClick={()=>{this.props.navigate('/#/form/' + topic.id);}}>form</span> : null}
+								<div className='Topic'>{topic.name}</div>
+								<div className='Description'>{topic.description ? topic.description : 'No description available'}</div>
+							</li>
+						))}
+					</ul>
+				</div>
+			</CSValidatorChanger>
 		);
 	}
 }

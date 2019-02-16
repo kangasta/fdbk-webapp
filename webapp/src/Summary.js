@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
+import { CSValidatorChanger } from 'chillisalmon';
+
 import ChartWrapper from './ChartWrapper';
 import { capitalize } from './Utils';
+
 import './style/Summary.css';
 
 class Summary extends Component {
@@ -74,59 +77,52 @@ class Summary extends Component {
 		);
 	}
 
-	render() {
-		if (this.state.view.hasOwnProperty('loading')) {
+	getContent() {
+		try {
 			return (
-				<div className='Summary Loading'>
-					<h1>Loading</h1>
-					<p>{this.state.view.loading.toString()}</p>
-				</div>
-			);
-		}
-
-		if (this.state.view.hasOwnProperty('error')) {
-			return (
-				<div className='Summary Error'>
-					<h1>Error</h1>
-					<p>{this.state.view.error.toString()}</p>
-				</div>
-			);
-		}
-
-		// TODO, This is for initial demo, please parametrize later
-		return (
-			<div className='Summary'>
-				<h1>{this.state.view.topic}</h1>
-				<p>{this.state.view.description}</p>
-				<div className='Summaries'>
-					{this.state.view.warnings.map(i => (
-						<p key={i} className='SummaryItem FdbkContainerHighlight DarkHighlight'>
-							<span className='FdbkContainerHighlightTitle'>Warning!</span><br/>
-							{i}
+				<div className='Summary'>
+					<h1>{this.state.view.topic}</h1>
+					<p>{this.state.view.description}</p>
+					<div className='Summaries'>
+						{this.state.view.warnings.map(i => (
+							<p key={i} className='SummaryItem FdbkContainerHighlight DarkHighlight'>
+								<span className='FdbkContainerHighlightTitle'>Warning!</span><br/>
+								{i}
+							</p>
+						))}
+						<p className='SummaryItem FdbkContainerHighlight'>
+							<span className="SummaryItemKeyNumeric FdbkContainerHighlightKeyNumeric">{this.state.view.num_entries}</span>entries
 						</p>
-					))}
-					<p className='SummaryItem FdbkContainerHighlight'>
-						<span className="SummaryItemKeyNumeric FdbkContainerHighlightKeyNumeric">{this.state.view.num_entries}</span>entries
-					</p>
-					{this.state.view.summaries.map(i => {
-						if (i === null) return null;
-						// TODO: Nan warning
-						return this.getSummaryComponent(i);
-					})}
+						{this.state.view.summaries.map(i => {
+							if (i === null) return null;
+							// TODO: Nan warning
+							return this.getSummaryComponent(i);
+						})}
+					</div>
+					<div className='Visualizations'>
+						{this.state.view.visualizations.map(i => {
+							if (i === null) return null;
+							return (
+								<div key={i.type.toString() + i.field.toString()} className='VisualizationItem'>
+									<h2>{capitalize(i.field)}</h2>
+									<ChartWrapper {...i}/>
+								</div>
+							);
+						})}
+					</div>
+					{/* Output current state for debugging: <p className='Code'>{JSON.stringify(this.state, null, 2)}</p> */}
 				</div>
-				<div className='Visualizations'>
-					{this.state.view.visualizations.map(i => {
-						if (i === null) return null;
-						return (
-							<div key={i.type.toString() + i.field.toString()} className='VisualizationItem'>
-								<h2>{capitalize(i.field)}</h2>
-								<ChartWrapper {...i}/>
-							</div>
-						);
-					})}
-				</div>
-				{/* Output current state for debugging: <p className='Code'>{JSON.stringify(this.state, null, 2)}</p> */}
-			</div>
+			);
+		} catch(e) {
+			return null;
+		}
+	}
+
+	render() {
+		return (
+			<CSValidatorChanger error={this.state.view.error} loading={this.state.view.loading}>
+				{this.getContent()}
+			</CSValidatorChanger>
 		);
 	}
 }
