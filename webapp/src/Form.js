@@ -24,7 +24,7 @@ class Form extends Component {
 			'fields': {},
 			'token': token,
 			'view': {
-				'loading': 'Waiting for feedback topic data from server'
+				'loading': 'Waiting for feedback topic data'
 			}
 		};
 
@@ -109,8 +109,8 @@ class Form extends Component {
 					}
 				});
 			})
-			.catch((error_msg) => {
-				this.setState({view: {error: error_msg.toString()}});
+			.catch(() => {
+				this.setState({view: {error: 'Unable to fetch data'}});
 			});
 	}
 
@@ -179,8 +179,7 @@ class Form extends Component {
 	getContent() {
 		try {
 			return (
-				<div className='Form'>
-					<h1>{this.state.view.name}</h1>
+				<div className='Content'>
 					<p>{this.state.view.description}</p>
 					{this.state.view.fields.map(field => this.getInputForField(field))}
 					{this.props.requires_token ?
@@ -206,33 +205,39 @@ class Form extends Component {
 		}
 	}
 
+	getTitle() {
+		return this.state.view.name || this.props.topic_name;
+	}
+
 	render() {
 		return (
 			<div className='Form'>
+				<h1>{this.getTitle()}</h1>
 				<CSValidatorChanger error={this.state.view.error} loading={this.state.view.loading} success={this.state.view.success}>
 					{this.getContent()}
 				</CSValidatorChanger>
 				{this.state.view.success === undefined ? null : <CallbackTimer
-						callback={()=>{this.props.navigate('/#/summary/' + this.props.topic_id);}}
-						time={5000}
-						time_className='FdbkContainerHighlightKeyNumeric'
-						text='Redirecting to results summary in '
-						text_className='FdbkContainerHighlight'/>}
+					callback={()=>{this.props.navigate('/#/summary/' + this.props.topic_id);}}
+					time={5000}
+					time_className='FdbkContainerHighlightKeyNumeric'
+					text='Redirecting to results summary in '
+					text_className='FdbkContainerHighlight'/>}
 			</div>
 		);
 	}
 }
 
-// TODO: This is for initial demo, please remove later
 Form.defaultProps = {
 	navigate: ()=>undefined,
 	topic_id: '',
+	topic_name: 'Form',
 	requires_token: false
 };
 
 Form.propTypes = {
 	navigate: PropTypes.func,
 	topic_id: PropTypes.string,
+	topic_name: PropTypes.string,
 	requires_token: PropTypes.bool
 };
 
