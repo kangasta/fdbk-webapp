@@ -11,7 +11,7 @@ class TopicList extends Component {
 
 		this.state = {
 			'view': {
-				'loading': 'Waiting for feedback topic data from server'
+				'loading': 'Waiting for feedback topic data'
 			}
 		};
 	}
@@ -29,8 +29,8 @@ class TopicList extends Component {
 					}
 				});
 			})
-			.catch((error_msg) => {
-				this.setState({'view': {'error': error_msg.toString()}});
+			.catch(() => {
+				this.setState({'view': {'error': 'Unable to fetch data'}});
 			});
 	}
 
@@ -38,9 +38,9 @@ class TopicList extends Component {
 		const topics = this.state.view.topics || [];
 
 		return (
-			<CSValidatorChanger error={this.state.view.error} loading={this.state.view.loading}>
-				<div className="TopicList">
-					<h1>Topics</h1>
+			<div className="TopicList">
+				<h1>Topics</h1>
+				<CSValidatorChanger error={this.state.view.error} loading={this.state.view.loading}>
 					<ul className='TopicList'>
 						{topics.map(topic => (
 							<li key={topic} className="Topic FdbkContainerHighlight">
@@ -51,8 +51,8 @@ class TopicList extends Component {
 							</li>
 						))}
 					</ul>
-				</div>
-			</CSValidatorChanger>
+				</CSValidatorChanger>
+			</div>
 		);
 	}
 }

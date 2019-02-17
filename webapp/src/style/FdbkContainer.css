@@ -63,16 +63,16 @@
 	white-space: pre-wrap;
 }
 
-.FdbkContainerHighlight {
+.FdbkContainerHighlight, .CSStatus {
 	background-color: #EEE;
 	color: #666;
 	font-size: 1.25em;
 	margin: .5em -2em;
-	padding: 0.8em;
+	padding: 0.8em 2em;
 	text-align: center;
 }
 
-.FdbkContainerHighlight.DarkHighlight {
+.FdbkContainerHighlight.DarkHighlight, .CSStatus.Error, .CSStatus.Warning {
 	background-color: #444;
 	color: #EEE;
 }
@@ -89,11 +89,14 @@
 }
 
 .CSStatus .Icon {
-	float: left;
-	font-size: 5em;
+	font-size: 3em;
 	margin-right: 0.25em;
 }
 
-.CSStatus h1, .CSStatus p {
+.CSStatus h1 {
+	display: none;
+}
+
+.CSStatus p {
 	overflow: auto;
 }

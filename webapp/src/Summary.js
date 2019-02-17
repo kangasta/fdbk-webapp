@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-import { CSValidatorChanger } from 'chillisalmon';
+import { CSStatus, CSValidatorChanger } from 'chillisalmon';
 
 import ChartWrapper from './ChartWrapper';
 import { capitalize } from './Utils';
@@ -15,7 +15,7 @@ class Summary extends Component {
 
 		this.state = {
 			'view': {
-				'loading': 'Waiting for feedback topic data from server'
+				'loading': 'Waiting for feedback topic data'
 			}
 		};
 	}
@@ -41,8 +41,8 @@ class Summary extends Component {
 				}
 				this.setState({view: response_json});
 			})
-			.catch((error_msg) => {
-				this.setState({view: {error: error_msg.toString()}});
+			.catch(() => {
+				this.setState({view: {error: 'Unable to fetch data'}});
 			});
 	}
 
@@ -80,15 +80,11 @@ class Summary extends Component {
 	getContent() {
 		try {
 			return (
-				<div className='Summary'>
-					<h1>{this.state.view.topic}</h1>
+				<div className='Content'>
 					<p>{this.state.view.description}</p>
 					<div className='Summaries'>
 						{this.state.view.warnings.map(i => (
-							<p key={i} className='SummaryItem FdbkContainerHighlight DarkHighlight'>
-								<span className='FdbkContainerHighlightTitle'>Warning!</span><br/>
-								{i}
-							</p>
+							<CSStatus key={i} status={CSStatus.status.WARNING} message={i}/>
 						))}
 						<p className='SummaryItem FdbkContainerHighlight'>
 							<span className="SummaryItemKeyNumeric FdbkContainerHighlightKeyNumeric">{this.state.view.num_entries}</span>entries
@@ -118,11 +114,18 @@ class Summary extends Component {
 		}
 	}
 
+	getTitle() {
+		return this.state.view.topic || this.props.topic_name;
+	}
+
 	render() {
 		return (
-			<CSValidatorChanger error={this.state.view.error} loading={this.state.view.loading}>
-				{this.getContent()}
-			</CSValidatorChanger>
+			<div className='Summary'>
+				<h1>{this.getTitle()}</h1>
+				<CSValidatorChanger error={this.state.view.error} loading={this.state.view.loading}>
+					{this.getContent()}
+				</CSValidatorChanger>
+			</div>
 		);
 	}
 }
@@ -130,11 +133,13 @@ class Summary extends Component {
 // TODO: This is for initial demo, please remove later
 Summary.defaultProps = {
 	topic_id: '',
+	topic_name: 'Summary',
 	update_interval: 30e3,
 };
 
 Summary.propTypes = {
 	topic_id: PropTypes.string,
+	topic_name: PropTypes.string,
 	update_interval: PropTypes.number,
 };
 
