@@ -3,6 +3,8 @@ import { mount } from 'enzyme';
 
 import Summary from '../Summary';
 
+const fetch_promise = new Promise((resolve) => setTimeout(() => { resolve({json: () => ({topic: 'topic'})}); }), 1000);
+
 describe('Summary',() => {
 	it('shows error when created without topic', async () => {
 		const wrapper = mount(<Summary/>);
@@ -14,7 +16,6 @@ describe('Summary',() => {
 		expect(wrapper.exists('.cs-changer-item-active .Error')).toBe(true);
 	});
 	it('automatically updates on specified interval', () => {
-		const fetch_promise = new Promise((resolve) => setTimeout(() => { resolve({json: () => ({topic: 'topic'})}); }), 1000);
 		global.fetch = jest.fn(() => fetch_promise);
 
 		const wrapper = mount(<Summary topic_id='topic' update_interval={1000}/>);
@@ -29,5 +30,12 @@ describe('Summary',() => {
 			jest.runTimersToTime(1000);
 			expect(global.fetch).toHaveBeenCalledTimes(i);
 		});
+	});
+	it('clears timers at unmount', () => {
+		global.fetch = jest.fn(() => fetch_promise);
+
+		const wrapper = mount(<Summary topic_id='topic'/>);
+		wrapper.unmount();
+		expect(clearInterval).toHaveBeenCalled();
 	});
 });

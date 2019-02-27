@@ -32,6 +32,10 @@ class Summary extends Component {
 		return this.update();
 	}
 
+	componentWillUnmount() {
+		clearInterval(this.state.updateIntervalId);
+	}
+
 	update() {
 		return fetch('/get/summary/' + this.props.topic_id)
 			.then((response) => response.json())
