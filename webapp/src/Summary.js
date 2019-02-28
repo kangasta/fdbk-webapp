@@ -5,7 +5,7 @@ import moment from 'moment';
 import { CSStatus, CSValidatorChanger } from 'chillisalmon';
 
 import ChartWrapper from './ChartWrapper';
-import { capitalize } from './Utils';
+import { capitalize, checkJsonForErrors } from './Utils';
 
 import './style/Summary.css';
 
@@ -39,10 +39,8 @@ class Summary extends Component {
 	update() {
 		return fetch('/get/summary/' + this.props.topic_id)
 			.then((response) => response.json())
+			.then(checkJsonForErrors)
 			.then((response_json) => {
-				if (response_json.hasOwnProperty('error') && response_json.error) {
-					throw new Error(response_json.error);
-				}
 				this.setState({view: response_json});
 			})
 			.catch(() => {
