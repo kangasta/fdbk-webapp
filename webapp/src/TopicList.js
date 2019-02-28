@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import { checkJsonForErrors } from './Utils';
 import { CSValidatorChanger } from 'chillisalmon';
 
 import './style/TopicList.css';
@@ -19,10 +20,8 @@ class TopicList extends Component {
 	componentDidMount() {
 		return fetch('/get/topics')
 			.then((response) => response.json())
+			.then(checkJsonForErrors)
 			.then((response_json) => {
-				if (response_json.hasOwnProperty('error') && response_json.error) {
-					throw new Error(response_json.error);
-				}
 				this.setState({
 					'view': {
 						'topics': response_json

@@ -6,6 +6,15 @@ function capitalize(str_in) {
 	}
 }
 
+function checkJsonForErrors(input_json) {
+	['error', 'errors'].forEach(error => {
+		if (input_json.hasOwnProperty(error) && input_json[error]) {
+			throw new Error(input_json[error]);
+		}
+	});
+	return input_json;
+}
+
 function anyToString(any) {
 	try {
 		return any.toString();
@@ -14,4 +23,4 @@ function anyToString(any) {
 	}
 }
 
-export { anyToString, capitalize };
+export { anyToString, checkJsonForErrors, capitalize };

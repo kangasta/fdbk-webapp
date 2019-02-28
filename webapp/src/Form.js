@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { CSValidatorChanger } from 'chillisalmon';
 
+import { checkJsonForErrors } from './Utils';
 import CallbackTimer from './CallbackTimer';
 
 import './style/Form.css';
@@ -40,10 +41,8 @@ class Form extends Component {
 		}
 		return fetch('/get/topic/' + this.props.topic_id)
 			.then((response) => response.json())
+			.then(checkJsonForErrors)
 			.then((response_json) => {
-				if (response_json.hasOwnProperty('error') && response_json.error) {
-					throw new Error(response_json.error);
-				}
 				const fields = response_json.fields.reduce((obj, field) => {
 					obj[field] = null;
 					return obj;
@@ -99,10 +98,8 @@ class Form extends Component {
 			}
 		})
 			.then((response) => response.json())
-			.then((response_json) => {
-				if (response_json.hasOwnProperty('error') && response_json.error) {
-					throw new Error(response_json.error);
-				}
+			.then(checkJsonForErrors)
+			.then(() => {
 				this.setState({
 					'view': {
 						'success': 'Data submitted successfully'
