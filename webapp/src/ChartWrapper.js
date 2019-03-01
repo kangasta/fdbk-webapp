@@ -33,6 +33,7 @@ class ChartWrapper extends Component {
 	}
 
 	componentDidUpdate() {
+		if (!this.chart) return;
 		this.chart.data.datasets[0].data = this.props.data;
 		this.chart.data.labels = this.props.labels;
 		this.chart.update();
@@ -81,7 +82,6 @@ class ChartWrapper extends Component {
 				options: this.line_options
 			});
 		}
-		return null;
 	}
 
 	render() {
@@ -99,7 +99,7 @@ class ChartWrapper extends Component {
 				</p>
 			);
 		}
-		// this.props.data
+
 		setTimeout(this.renderChart, 0);
 
 		return (
