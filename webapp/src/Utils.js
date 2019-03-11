@@ -1,3 +1,15 @@
+function _sToSpaces(str_in) {
+	return anyToString(str_in).replace(/_/g, ' ');
+}
+
+function anyToString(any) {
+	try {
+		return any.toString();
+	} catch(e) {
+		return '';
+	}
+}
+
 function capitalize(str_in) {
 	try {
 		return str_in.charAt(0).toUpperCase() + str_in.slice(1);
@@ -15,12 +27,4 @@ function checkJsonForErrors(input_json) {
 	return input_json;
 }
 
-function anyToString(any) {
-	try {
-		return any.toString();
-	} catch(e) {
-		return '';
-	}
-}
-
-export { anyToString, checkJsonForErrors, capitalize };
+export { _sToSpaces, anyToString, checkJsonForErrors, capitalize };

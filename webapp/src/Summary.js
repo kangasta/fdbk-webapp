@@ -5,7 +5,7 @@ import moment from 'moment';
 import { CSStatus, CSValidatorChanger } from 'chillisalmon';
 
 import ChartWrapper from './ChartWrapper';
-import { capitalize, checkJsonForErrors } from './Utils';
+import { _sToSpaces, capitalize, checkJsonForErrors } from './Utils';
 
 import './style/Summary.css';
 
@@ -60,11 +60,11 @@ class Summary extends Component {
 		case 'last_truthy':
 		case 'last_falsy':
 			if (summary_item.value === null) return null;
-			intro = 'Last ' + summary_item.field + ' ';
+			intro = 'Last ' + _sToSpaces(summary_item.field) + ' ';
 			detail = moment(summary_item.value).fromNow();
 			break;
 		default:
-			intro = capitalize(summary_item.type).replace('_', ' ') + ' ' + summary_item.field;
+			intro = capitalize(summary_item.type).replace('_', ' ') + ' ' + _sToSpaces(summary_item.field);
 			hilight = (
 				<span className="SummaryItemKeyNumeric FdbkContainerHighlightKeyNumeric">{Math.round(summary_item.value * 10) / 10}</span>
 			);
@@ -102,7 +102,7 @@ class Summary extends Component {
 							if (i === null) return null;
 							return (
 								<div key={i.type.toString() + i.field.toString()} className='VisualizationItem'>
-									<h2>{capitalize(i.field)}</h2>
+									<h2>{capitalize(_sToSpaces(i.field))}</h2>
 									<ChartWrapper {...i}/>
 								</div>
 							);
