@@ -15,6 +15,8 @@ class TopicList extends Component {
 				'loading': 'Waiting for feedback topic data'
 			}
 		};
+
+		this.getTopicItem = this.getTopicItem.bind(this);
 	}
 
 	componentDidMount() {
@@ -33,22 +35,60 @@ class TopicList extends Component {
 			});
 	}
 
-	render() {
+	getTopics() {
 		const topics = this.state.view.topics || [];
+		switch (this.props.listType) {
+		case 'form':
+			return topics.filter(topic => topic.form_submissions);
+		case 'summary':
+		default:
+			return topics;
+		}
+	}
+
+	getTopicItem(topic) {
+		const getOnClick = item => {
+			if (this.props.listType === undefined && item !== 'topic') {
+				return () => {
+					this.props.navigate('/#/' + item + '/' + topic.id);
+				};
+			}
+			if (this.props.listType !== undefined && item === 'topic') {
+				return () => {
+					this.props.navigate('/#/' + this.props.listType + '/' + topic.id);
+				};
+			}
+			return undefined;
+		};
 
 		return (
-			<div className="TopicList">
-				<h1>Topics</h1>
+			<li key={topic.id} className={'Topic FdbkContainerHighlight ' + (this.props.listType !== undefined ? 'Link' : '')} onClick={getOnClick('topic')}>
+				<span className='Right Link' onClick={getOnClick('summary')}>summary</span>
+				{topic.form_submissions ? <span className='Right Link' onClick={getOnClick('form')}>form</span> : null}
+				<div className='Topic'>{topic.name}</div>
+				<div className='Description'>{topic.description ? topic.description : 'No description available'}</div>
+			</li>
+		);
+	}
+
+	getTitleText() {
+		switch(this.props.listType) {
+		case 'summary':
+			return 'Summaries';
+		case 'form':
+			return 'Forms';
+		default:
+			return 'All topics';
+		}
+	}
+
+	render() {
+		return (
+			<div className='TopicList'>
+				<h1>{this.getTitleText()}</h1>
 				<CSValidatorChanger error={this.state.view.error} loading={this.state.view.loading}>
 					<ul className='TopicList'>
-						{topics.map(topic => (
-							<li key={topic} className="Topic FdbkContainerHighlight">
-								<span className="Right Link" onClick={()=>{this.props.navigate('/#/summary/' + topic.id);}}>summary</span>
-								{topic.form_submissions ? <span className="Right Link" onClick={()=>{this.props.navigate('/#/form/' + topic.id);}}>form</span> : null}
-								<div className='Topic'>{topic.name}</div>
-								<div className='Description'>{topic.description ? topic.description : 'No description available'}</div>
-							</li>
-						))}
+						{this.getTopics().map(this.getTopicItem)}
 					</ul>
 				</CSValidatorChanger>
 			</div>
@@ -61,7 +101,8 @@ TopicList.defaultProps = {
 };
 
 TopicList.propTypes = {
-	navigate: PropTypes.func
+	navigate: PropTypes.func,
+	listType: PropTypes.oneOf([undefined, 'summary', 'form'])
 };
 
 export default TopicList;
