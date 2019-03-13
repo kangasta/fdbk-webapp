@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import FdbkContainer from './FdbkContainer';
 import Form from './Form';
+import Logo from './Logo';
+import NavBar from './NavBar';
 import Summary from './Summary';
 import TopicList from './TopicList';
 
@@ -25,9 +27,17 @@ class App extends Component {
 			return (
 				<Form navigate={this.navigate} topic_id={this.state.view.form}/>
 			);
+		} else if (this.state.view.hasOwnProperty('forms')) {
+			return (
+				<TopicList listType='form' navigate={this.navigate}/>
+			);
 		} else if (this.state.view.hasOwnProperty('summary')) {
 			return (
 				<Summary topic_id={this.state.view.summary}/>
+			);
+		} else if (this.state.view.hasOwnProperty('summaries')) {
+			return (
+				<TopicList listType='summary' navigate={this.navigate}/>
 			);
 		} else {
 			return (
@@ -46,10 +56,24 @@ class App extends Component {
 				},
 				'url': match[0]
 			};
+		} else if (match = url.match(/#\/forms/)) {
+			return {
+				'view': {
+					'forms': null
+				},
+				'url': match[0]
+			};
 		} else if (match = url.match(/#\/summary\/([^/]*)/)) {
 			return {
 				'view': {
 					'summary': match[1]
+				},
+				'url': match[0]
+			};
+		} else if (match = url.match(/#\/summaries/)) {
+			return {
+				'view': {
+					'summaries': null
 				},
 				'url': match[0]
 			};
@@ -71,8 +95,14 @@ class App extends Component {
 	}
 
 	render() {
+		const navbar_links = [
+			{target: '/#/summaries', text: 'Summaries'},
+			{target: '/#/forms', text: 'Forms'}
+		];
+
 		return (
 			<div className='App'>
+				<NavBar links={navbar_links} navigate={this.navigate} title={<Logo/>}/>
 				<div className='Center'>
 					<FdbkContainer navigate={this.navigate}>
 						{this.getActiveView()}
