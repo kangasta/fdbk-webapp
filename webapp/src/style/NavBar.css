@@ -1,0 +1,35 @@
+.NavBar {
+	background: #333;
+	color: #eee;
+	font-size: 1.5rem;
+	height: 2em;
+	position: fixed;
+	top: 0;
+	width: 100vw;
+}
+
+.NavBar ul {
+	margin: 0;
+	padding: 0;
+}
+
+.NavBar li {
+	display: inline-block;
+	height: 2em;
+	line-height: 2em;
+	margin: 0 0.25em;
+	padding: 0 0.5em;
+	transition: all 250ms;
+}
+
+.NavBar li.Target:hover {
+	background: #444;
+}
+
+.NavBar li.Title {
+	padding: 0 1.5em;
+}
+
+.NavBar li.Title:hover {
+	color: #808;
+}
