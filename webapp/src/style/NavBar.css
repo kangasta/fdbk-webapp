@@ -3,9 +3,9 @@
 	color: #eee;
 	font-size: 1.5rem;
 	height: 2em;
-	position: fixed;
+	margin: 0;
 	top: 0;
-	width: 100vw;
+	z-index: 100;
 }
 
 .NavBar ul {
