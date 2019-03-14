@@ -39,6 +39,11 @@ class App extends Component {
 			return (
 				<TopicList listType='summary' navigate={this.navigate}/>
 			);
+		} else if (this.state.view.hasOwnProperty('select_for_comparison')) {
+			return (
+				// eslint-disable-next-line no-console
+				<TopicList listType='select' navigate={this.navigate} select={console.log}/>
+			);
 		} else {
 			return (
 				<TopicList navigate={this.navigate}/>
@@ -77,6 +82,13 @@ class App extends Component {
 				},
 				'url': match[0]
 			};
+		} else if (match = url.match(/#\/select-for-comparison/)) {
+			return {
+				'view': {
+					'select_for_comparison': null
+				},
+				'url': match[0]
+			};
 		} else {
 			return {
 				'view': {
@@ -97,7 +109,8 @@ class App extends Component {
 	render() {
 		const navbar_links = [
 			{target: '/#/summaries', text: 'Summaries'},
-			{target: '/#/forms', text: 'Forms'}
+			{target: '/#/forms', text: 'Forms'},
+			{target: '/#/select-for-comparison', text: 'Comparison'},
 		];
 
 		return (

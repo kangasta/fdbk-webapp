@@ -70,6 +70,7 @@
 	margin: .5em -2em;
 	padding: 0.8em 2em;
 	text-align: center;
+	transition: all 250ms;
 }
 
 .FdbkContainerHighlight.DarkHighlight, .CSStatus.Error, .CSStatus.Warning {

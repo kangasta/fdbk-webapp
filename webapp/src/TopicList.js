@@ -11,12 +11,14 @@ class TopicList extends Component {
 		super(props);
 
 		this.state = {
-			'view': {
+			view: {
 				'loading': 'Waiting for feedback topic data'
-			}
+			},
+			selected: [],
 		};
 
 		this.getTopicItem = this.getTopicItem.bind(this);
+		this.toggleSelected = this.toggleSelected.bind(this);
 	}
 
 	componentDidMount() {
@@ -35,15 +37,35 @@ class TopicList extends Component {
 			});
 	}
 
+	toggleSelected(topic_id) {
+		if (this.state.selected.includes(topic_id)) {
+			this.setState(prev => ({
+				selected: prev.selected.filter(id => (id !== topic_id))
+			}));
+		} else {
+			this.setState(prev => ({
+				selected: prev.selected.concat(topic_id)
+			}));
+		}
+	}
+
 	getTopics() {
 		const topics = this.state.view.topics || [];
 		switch (this.props.listType) {
 		case 'form':
 			return topics.filter(topic => topic.form_submissions);
 		case 'summary':
+		case 'select':
 		default:
 			return topics;
 		}
+	}
+
+	getIncludedFloat(topic_id) {
+		const text = this.state.selected.includes(topic_id) ? 'in' : 'out';
+		return (
+			<span className='Right Link'>{text}</span>
+		);
 	}
 
 	getTopicItem(topic) {
@@ -53,18 +75,23 @@ class TopicList extends Component {
 					this.props.navigate('/#/' + item + '/' + topic.id);
 				};
 			}
-			if (this.props.listType !== undefined && item === 'topic') {
+			if (![undefined, 'select'].includes(this.props.listType) && item === 'topic') {
 				return () => {
 					this.props.navigate('/#/' + this.props.listType + '/' + topic.id);
 				};
 			}
+			if (this.props.listType === 'select' && item === 'topic') {
+				return () => { this.toggleSelected(topic.id); };
+			}
 			return undefined;
 		};
+		const includedClass = (this.state.selected.includes(topic.id) || this.props.listType !== 'select') ? '' : 'DarkHighlight ';
 
 		return (
-			<li key={topic.id} className={'Topic FdbkContainerHighlight ' + (this.props.listType !== undefined ? 'Link' : '')} onClick={getOnClick('topic')}>
-				<span className='Right Link' onClick={getOnClick('summary')}>summary</span>
+			<li key={topic.id} className={'Topic FdbkContainerHighlight ' + includedClass + (this.props.listType !== undefined ? 'Link' : '')} onClick={getOnClick('topic')}>
+				{this.props.listType !== 'select' ? <span className='Right Link' onClick={getOnClick('summary')}>summary</span> : null}
 				{topic.form_submissions ? <span className='Right Link' onClick={getOnClick('form')}>form</span> : null}
+				{this.props.listType === 'select' ? this.getIncludedFloat(topic.id) : null}
 				<div className='Topic'>{topic.name}</div>
 				<div className='Description'>{topic.description ? topic.description : 'No description available'}</div>
 			</li>
@@ -77,6 +104,8 @@ class TopicList extends Component {
 			return 'Summaries';
 		case 'form':
 			return 'Forms';
+		case 'select':
+			return 'Select topics';
 		default:
 			return 'All topics';
 		}
@@ -93,6 +122,9 @@ class TopicList extends Component {
 		return (
 			<ul className='TopicList'>
 				{topics.map(this.getTopicItem)}
+				{this.props.listType === 'select' ? <div className='Submit'>
+					<button className='Link' onClick={() => { this.props.select(this.state.selected); }}>Select</button>
+				</div> : null}
 			</ul>
 		);
 	}
@@ -110,12 +142,14 @@ class TopicList extends Component {
 }
 
 TopicList.defaultProps = {
-	navigate: ()=>undefined
+	navigate: ()=>undefined,
+	select: ()=>undefined,
 };
 
 TopicList.propTypes = {
 	navigate: PropTypes.func,
-	listType: PropTypes.oneOf([undefined, 'summary', 'form'])
+	listType: PropTypes.oneOf([undefined, 'select', 'summary', 'form']),
+	select: PropTypes.func,
 };
 
 export default TopicList;
