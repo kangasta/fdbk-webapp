@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "chart.js": "^2.7.3",
-    "chillisalmon": "https://github.com/kangasta/chillisalmon/releases/download/v0.10.1/chillisalmon-0.10.1.tgz",
+    "chillisalmon": "https://github.com/kangasta/chillisalmon/releases/download/v0.10.2/chillisalmon-0.10.2.tgz",
     "moment": "^2.24.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
