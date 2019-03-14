@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { checkJsonForErrors } from './Utils';
-import { CSValidatorChanger } from 'chillisalmon';
+import { CSValidatorChanger, CSStatus } from 'chillisalmon';
 
 import './style/TopicList.css';
 
@@ -82,14 +82,27 @@ class TopicList extends Component {
 		}
 	}
 
+	getTopicList() {
+		const topics = this.getTopics();
+		if (topics.length === 0) {
+			return (
+				<CSStatus status={CSStatus.status.MESSAGE} message='No matching topics available.'/>
+			);
+		}
+
+		return (
+			<ul className='TopicList'>
+				{topics.map(this.getTopicItem)}
+			</ul>
+		);
+	}
+
 	render() {
 		return (
 			<div className='TopicList'>
 				<h1>{this.getTitleText()}</h1>
 				<CSValidatorChanger error={this.state.view.error} loading={this.state.view.loading}>
-					<ul className='TopicList'>
-						{this.getTopics().map(this.getTopicItem)}
-					</ul>
+					{this.getTopicList()}
 				</CSValidatorChanger>
 			</div>
 		);
