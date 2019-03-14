@@ -4,11 +4,27 @@ import PropTypes from 'prop-types';
 import './style/NavBar.css';
 
 class NavBar extends Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			open: false
+		};
+
+		this.toggleOpen = this.toggleOpen.bind(this);
+	}
+
+	toggleOpen() {
+		this.setState(prev => ({
+			open: !prev.open
+		}));
+	}
+
 	render() {
 		return (
-			<div className="NavBar">
+			<div className={'NavBar ' + (this.state.open ? 'Open' : '')}>
 				<ul>
-					<li className='Title' onClick={() => {this.props.navigate('/');}}>{this.props.title}</li>
+					<li className='Title' onClick={this.toggleOpen}>{this.props.title}</li>
 					{this.props.links.map(link => (
 						<li key={link.target} className='Target' onClick={() => {this.props.navigate(link.target);}}>{link.text}</li>
 					))}

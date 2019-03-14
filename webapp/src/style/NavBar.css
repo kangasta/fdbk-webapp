@@ -1,11 +1,32 @@
+@media (min-width: 49em) {
+	.NavBar li {
+		display: inline-block;
+	}
+}
+
+@media (max-width: 49em) {
+	.NavBar {
+		text-align: center;
+	}
+	.NavBar li {
+		display: block;
+	}
+}
+
 .NavBar {
 	background: #333;
 	color: #eee;
 	font-size: 1.5rem;
-	height: 2em;
+	max-height: 2em;
 	margin: 0;
+	overflow: hidden;
 	top: 0;
+	transition: all 333ms;
 	z-index: 100;
+}
+
+.NavBar.Open {
+	max-height: 100em;
 }
 
 .NavBar ul {
@@ -14,11 +35,10 @@
 }
 
 .NavBar li {
-	display: inline-block;
 	height: 2em;
 	line-height: 2em;
-	margin: 0 0.25em;
-	padding: 0 0.5em;
+	margin: 0;
+	padding: 0 0.75em;
 	transition: all 250ms;
 }
 
