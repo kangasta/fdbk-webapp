@@ -69,29 +69,31 @@ class TopicList extends Component {
 	}
 
 	getTopicItem(topic) {
+		const listType = this.props.listType;
 		const getOnClick = item => {
-			if (this.props.listType === undefined && item !== 'topic') {
+			if (listType === undefined && item !== 'topic') {
 				return () => {
 					this.props.navigate('/#/' + item + '/' + topic.id);
 				};
 			}
-			if (![undefined, 'select'].includes(this.props.listType) && item === 'topic') {
+			if (![undefined, 'select'].includes(listType) && item === 'topic') {
 				return () => {
-					this.props.navigate('/#/' + this.props.listType + '/' + topic.id);
+					this.props.navigate('/#/' + listType + '/' + topic.id);
 				};
 			}
-			if (this.props.listType === 'select' && item === 'topic') {
+			if (listType === 'select' && item === 'topic') {
 				return () => { this.toggleSelected(topic.id); };
 			}
 			return undefined;
 		};
-		const includedClass = (this.state.selected.includes(topic.id) || this.props.listType !== 'select') ? '' : 'DarkHighlight ';
+		const isVisible = item => (listType === undefined || listType === item);
+		const includedClass = (this.state.selected.includes(topic.id) || listType !== 'select') ? '' : 'DarkHighlight ';
 
 		return (
-			<li key={topic.id} className={'Topic FdbkContainerHighlight ' + includedClass + (this.props.listType !== undefined ? 'Link' : '')} onClick={getOnClick('topic')}>
-				{this.props.listType !== 'select' ? <span className='Right Link' onClick={getOnClick('summary')}>summary</span> : null}
-				{topic.form_submissions ? <span className='Right Link' onClick={getOnClick('form')}>form</span> : null}
-				{this.props.listType === 'select' ? this.getIncludedFloat(topic.id) : null}
+			<li key={topic.id} className={'Topic FdbkContainerHighlight ' + includedClass + (listType !== undefined ? 'Link' : '')} onClick={getOnClick('topic')}>
+				{isVisible('summary') ? <span className='Right Link' onClick={getOnClick('summary')}>summary</span> : null}
+				{topic.form_submissions && isVisible('form') ? <span className='Right Link' onClick={getOnClick('form')}>form</span> : null}
+				{listType === 'select' ? this.getIncludedFloat(topic.id) : null}
 				<div className='Topic'>{topic.name}</div>
 				<div className='Description'>{topic.description ? topic.description : 'No description available'}</div>
 			</li>
