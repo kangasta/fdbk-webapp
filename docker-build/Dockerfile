@@ -1,5 +1,5 @@
 FROM python:3-alpine
-ARG webapp_version="0.10.0"
+ARG webapp_version="0.10.1"
 
 RUN pip install fdbk==$(echo ${webapp_version} | sed -Ee "s#(.\..\.).#\1*#")
 
