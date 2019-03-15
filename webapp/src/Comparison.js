@@ -45,10 +45,22 @@ class Comparison extends Component {
 			});
 	}
 
+	getTopicsString() {
+		try {
+			const topics = this.state.view.topic_names;
+			if (topics.length === 1) return topics[0];
+			if (topics.length === 2) return topics.join(' and ');
+			return topics.slice(0,-1).join(', ') + ', and ' + topics.slice(-1);
+		} catch(e) {
+			return null;
+		}
+	}
+
 	getContent() {
 		try {
 			return (
 				<div className='Content'>
+					<p>Comparing topics {this.getTopicsString()}</p>
 					<Visualizations data={this.state.view.visualizations}/>
 					{/* Output current state for debugging: <p className='Code'>{JSON.stringify(this.state, null, 2)}</p> */}
 				</div>
