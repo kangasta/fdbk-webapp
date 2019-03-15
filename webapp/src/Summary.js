@@ -4,10 +4,8 @@ import moment from 'moment';
 
 import { CSStatus, CSValidatorChanger } from 'chillisalmon';
 
-import ChartWrapper from './ChartWrapper';
 import { _sToSpaces, capitalize, checkJsonForErrors } from './Utils';
-
-import './style/Summary.css';
+import Visualizations from './Visualizations';
 
 class Summary extends Component {
 	constructor(props) {
@@ -97,17 +95,7 @@ class Summary extends Component {
 							return this.getSummaryComponent(i);
 						})}
 					</div>
-					<div className='Visualizations'>
-						{this.state.view.visualizations.map(i => {
-							if (i === null) return null;
-							return (
-								<div key={i.type.toString() + i.field.toString()} className='VisualizationItem'>
-									<h2>{capitalize(_sToSpaces(i.field))}</h2>
-									<ChartWrapper {...i}/>
-								</div>
-							);
-						})}
-					</div>
+					<Visualizations data={this.state.view.visualizations}/>
 					{/* Output current state for debugging: <p className='Code'>{JSON.stringify(this.state, null, 2)}</p> */}
 				</div>
 			);
