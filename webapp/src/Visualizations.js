@@ -16,7 +16,7 @@ class Visualizations extends Component {
 				field: [],
 				type: type,
 				title: title
-			}
+			};
 		};
 
 		this.props.data.forEach(i => {

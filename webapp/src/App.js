@@ -46,7 +46,7 @@ class App extends Component {
 			);
 		} else if (this.state.view.hasOwnProperty('select_for_comparison')) {
 			return (
-				<TopicList listType='select' navigate={this.navigate} select={topic_ids => {this.navigate('/#/comparison/' + topic_ids.join(','))}}/>
+				<TopicList listType='select' navigate={this.navigate} select={topic_ids => {this.navigate('/#/comparison/' + topic_ids.join(','));}}/>
 			);
 		} else {
 			return (
@@ -87,7 +87,6 @@ class App extends Component {
 				'url': match[0]
 			};
 		} else if (match = url.match(/#\/comparison\/([0-9a-f-,]*)/)) {
-			console.log(match[1].split(','))
 			return {
 				'view': {
 					'comparison': match[1].split(',')

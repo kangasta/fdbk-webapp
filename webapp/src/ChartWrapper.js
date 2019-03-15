@@ -49,7 +49,7 @@ class ChartWrapper extends Component {
 		if (!this.chart) return;
 		this.getDatasets().forEach((dataset, i) => {
 			this.chart.data.datasets[i].data = dataset.data;
-		})
+		});
 		if (this.props.labels) {
 			this.chart.data.labels = this.props.labels;
 		}
@@ -81,13 +81,13 @@ class ChartWrapper extends Component {
 			if (this.props.type === 'horseshoe') return {
 				data: datas[i],
 				backgroundColor: ['#300080', '#580080', '#800080', '#800058', '#800030'],
-			}
+			};
 			if (this.props.type === 'line') return {
 				data: datas[i],
 				label: [capitalize(field)],
 				borderColor: this.line_colors[i % 5],
 				fill: false
-			}
+			};
 			return null;
 		});
 	}
