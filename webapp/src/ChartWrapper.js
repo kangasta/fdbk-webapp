@@ -4,7 +4,7 @@ import Chart from 'chart.js';
 
 import { anyToString, capitalize } from './Utils';
 
-//import './style/Chart.css';
+import './style/ChartWrapper.css';
 
 class ChartWrapper extends Component {
 	horseshoe_options = {
