@@ -29,6 +29,10 @@ font-family: 'Source Code Pro', monospace;
 	z-index: -100;
 }
 
+.Link {
+	user-select: none;
+}
+
 .Link:hover {
 	cursor: pointer;
 }

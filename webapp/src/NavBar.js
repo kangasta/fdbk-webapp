@@ -24,9 +24,9 @@ class NavBar extends Component {
 		return (
 			<div className={'NavBar ' + (this.state.open ? 'Open' : '')}>
 				<ul>
-					<li className='Title' onClick={this.toggleOpen}>{this.props.title}</li>
+					<li className='Title Link' onClick={this.toggleOpen}>{this.props.title}</li>
 					{this.props.links.map(link => (
-						<li key={link.target} className='Target' onClick={() => {this.props.navigate(link.target);}}>{link.text}</li>
+						<li key={link.target} className='Target Link' onClick={() => {this.props.navigate(link.target);}}>{link.text}</li>
 					))}
 				</ul>
 			</div>
