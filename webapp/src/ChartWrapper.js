@@ -9,7 +9,12 @@ import './style/ChartWrapper.css';
 class ChartWrapper extends Component {
 	horseshoe_options = {
 		circumference: 3 / 2 * Math.PI,
-		rotation: -5 / 4 * Math.PI
+		rotation: -5 / 4 * Math.PI,
+		elements: {
+			arc: {
+				borderWidth: 0
+			}
+		}
 	};
 
 	line_options = {
@@ -24,6 +29,14 @@ class ChartWrapper extends Component {
 		},
 	};
 
+	line_colors = [
+		'#800080',
+		'#300080',
+		'#800030',
+		'#580080',
+		'#800058',
+	]
+
 	constructor(props) {
 		super(props);
 
@@ -34,8 +47,12 @@ class ChartWrapper extends Component {
 
 	componentDidUpdate() {
 		if (!this.chart) return;
-		this.chart.data.datasets[0].data = this.props.data;
-		this.chart.data.labels = this.props.labels;
+		this.getDatasets().forEach((dataset, i) => {
+			this.chart.data.datasets[i].data = dataset.data;
+		})
+		if (this.props.labels) {
+			this.chart.data.labels = this.props.labels;
+		}
 		this.chart.update();
 	}
 
@@ -49,8 +66,34 @@ class ChartWrapper extends Component {
 		}
 	}
 
+	getDatasets() {
+		var datas, fields;
+
+		if (!Array.isArray(this.props.field)) {
+			datas = [this.props.data];
+			fields = [this.props.field];
+		} else {
+			datas = this.props.data;
+			fields = this.props.field;
+		}
+
+		return fields.map((field, i) => {
+			if (this.props.type === 'horseshoe') return {
+				data: datas[i],
+				backgroundColor: ['#300080', '#580080', '#800080', '#800058', '#800030'],
+			}
+			if (this.props.type === 'line') return {
+				data: datas[i],
+				label: [capitalize(field)],
+				borderColor: this.line_colors[i % 5],
+				fill: false
+			}
+			return null;
+		});
+	}
+
 	renderChart() {
-		const id = 'VisualizationChart' + capitalize(this.props.field) + capitalize(this.props.type);
+		const id = 'VisualizationChart' + capitalize(this.props.title) + capitalize(this.props.type);
 
 		if (this.chart !== undefined) return;
 
@@ -58,11 +101,7 @@ class ChartWrapper extends Component {
 			this.chart = new Chart(id, {
 				type: 'doughnut',
 				data: {
-					datasets: [{
-						data: this.props.data,
-						backgroundColor: ['#300080', '#580080', '#800080', '#800058', '#800030'],
-						borderColor: ['#CCC', '#CCC', '#CCC', '#CCC', '#CCC']
-					}],
+					datasets: this.getDatasets(),
 					labels: this.props.labels
 				},
 				options: this.horseshoe_options
@@ -71,13 +110,7 @@ class ChartWrapper extends Component {
 			this.chart = new Chart(id, {
 				type: 'line',
 				data: {
-					datasets: [{
-						data: this.props.data,
-						label: [capitalize(this.props.field)],
-						borderColor: ['#800080'],
-						fill: false
-					}],
-					labels: this.props.labels.map(a => new Date(a))
+					datasets: this.getDatasets(),
 				},
 				options: this.line_options
 			});
@@ -104,7 +137,7 @@ class ChartWrapper extends Component {
 
 		return (
 			<div className="Chart">
-				<canvas className='VisualizationChart' id={'VisualizationChart' + capitalize(this.props.field) + capitalize(this.props.type)} width='800' height='400'></canvas>
+				<canvas className='VisualizationChart' id={'VisualizationChart' + capitalize(this.props.title) + capitalize(this.props.type)} width='800' height='400'></canvas>
 			</div>
 		);
 	}
@@ -114,10 +147,11 @@ ChartWrapper.defaultProps = {
 };
 
 ChartWrapper.propTypes = {
-	data: PropTypes.array,
+	data: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.array), PropTypes.array]),
 	labels: PropTypes.array,
-	field: PropTypes.string,
+	field: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.string), PropTypes.string]),
 	type: PropTypes.string,
+	title: PropTypes.string,
 };
 
 export default ChartWrapper;
