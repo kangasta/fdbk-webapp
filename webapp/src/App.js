@@ -8,6 +8,7 @@ import Summary from './Summary';
 import TopicList from './TopicList';
 
 import './style/App.css';
+import Comparison from './Comparison';
 
 class App extends Component {
 	constructor(props) {
@@ -39,10 +40,13 @@ class App extends Component {
 			return (
 				<TopicList listType='summary' navigate={this.navigate}/>
 			);
+		} else if (this.state.view.hasOwnProperty('comparison')) {
+			return (
+				<Comparison topic_ids={this.state.view.comparison}/>
+			);
 		} else if (this.state.view.hasOwnProperty('select_for_comparison')) {
 			return (
-				// eslint-disable-next-line no-console
-				<TopicList listType='select' navigate={this.navigate} select={console.log}/>
+				<TopicList listType='select' navigate={this.navigate} select={topic_ids => {this.navigate('/#/comparison/' + topic_ids.join(','))}}/>
 			);
 		} else {
 			return (
@@ -79,6 +83,14 @@ class App extends Component {
 			return {
 				'view': {
 					'summaries': null
+				},
+				'url': match[0]
+			};
+		} else if (match = url.match(/#\/comparison\/([0-9a-f-,]*)/)) {
+			console.log(match[1].split(','))
+			return {
+				'view': {
+					'comparison': match[1].split(',')
 				},
 				'url': match[0]
 			};
