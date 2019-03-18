@@ -21,12 +21,17 @@ class NavBar extends Component {
 	}
 
 	render() {
+		const targetOnClick = link => (() => {
+			this.toggleOpen();
+			this.props.navigate(link.target);
+		});
+
 		return (
 			<div className={'NavBar ' + (this.state.open ? 'Open' : '')}>
 				<ul>
 					<li className='Title Link' onClick={this.toggleOpen}>{this.props.title}</li>
 					{this.props.links.map(link => (
-						<li key={link.target} className='Target Link' onClick={() => {this.props.navigate(link.target);}}>{link.text}</li>
+						<li key={link.target} className='Target Link' onClick={targetOnClick(link)}>{link.text}</li>
 					))}
 				</ul>
 			</div>
