@@ -5,11 +5,6 @@ import moment from 'moment';
 import { _sToSpaces, capitalize } from '../Utils';
 
 class Summaries extends Component {
-	getUnit(field) {
-		const unit = this.props.units.find(u => (u.field === field));
-		return (unit !== undefined) ? unit.unit : undefined;
-	}
-
 	getSummaryComponent(summary_item) {
 		var intro=null, hilight=null, detail=null;
 
@@ -25,7 +20,7 @@ class Summaries extends Component {
 			hilight = (
 				<span className="SummaryItemKeyNumeric FdbkContainerHighlightKeyNumeric">{Math.round(summary_item.value * 10) / 10}</span>
 			);
-			detail = this.getUnit(summary_item.field);
+			detail = summary_item.unit;
 		}
 		return (
 			<p key={summary_item.type.toString() + summary_item.field.toString()} className='SummaryItem FdbkContainerHighlight'>
@@ -54,13 +49,11 @@ class Summaries extends Component {
 
 Summaries.defaultProps = {
 	data: [],
-	units: [],
 };
 
 Summaries.propTypes = {
 	data: PropTypes.arrayOf(PropTypes.object),
 	numEntries: PropTypes.number,
-	units: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default Summaries;

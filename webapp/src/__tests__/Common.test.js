@@ -2,10 +2,10 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import Form from '../Form';
-import Summary from '../Summary';
+import DataAnalysis from '../DataAnalysis';
 import TopicList from '../TopicList';
 
-[{name: 'Form', component: Form}, {name: 'Summary', component: Summary}, {name: 'TopicList', component: TopicList}].forEach(CUT => {
+[{name: 'Form', component: Form}, {name: 'DataAnalysis', component: DataAnalysis}, {name: 'TopicList', component: TopicList}].forEach(CUT => {
 	describe(CUT.name, () => {
 		it('shows loading message while waiting fetch result and error when fetch fails', () => {
 			const fetch_promise = new Promise((resolve) => setTimeout(() => { resolve({json: () => ({error: 'Failing fetch() mock'})}); }), 1000);
