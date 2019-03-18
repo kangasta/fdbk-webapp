@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 
 import { CSStatus, CSValidatorChanger } from 'chillisalmon';
 
-import { _sToSpaces, capitalize, checkJsonForErrors } from './Utils';
+import { checkJsonForErrors } from './Utils';
 import Visualizations from './sub-components/Visualizations';
+import Summaries from './sub-components/Summaries';
 
 class Summary extends Component {
 	constructor(props) {
@@ -46,37 +46,6 @@ class Summary extends Component {
 			});
 	}
 
-	getUnit(field) {
-		const unit = this.state.view.units.find(u => (u.field === field));
-		return (unit !== undefined) ? unit.unit : undefined;
-	}
-
-	getSummaryComponent(summary_item) {
-		var intro=null, hilight=null, detail=null;
-
-		switch(summary_item.type) {
-		case 'last_truthy':
-		case 'last_falsy':
-			if (summary_item.value === null) return null;
-			intro = 'Last ' + _sToSpaces(summary_item.field) + ' ';
-			detail = moment(summary_item.value).fromNow();
-			break;
-		default:
-			intro = capitalize(summary_item.type).replace('_', ' ') + ' ' + _sToSpaces(summary_item.field);
-			hilight = (
-				<span className="SummaryItemKeyNumeric FdbkContainerHighlightKeyNumeric">{Math.round(summary_item.value * 10) / 10}</span>
-			);
-			detail = this.getUnit(summary_item.field);
-		}
-		return (
-			<p key={summary_item.type.toString() + summary_item.field.toString()} className='SummaryItem FdbkContainerHighlight'>
-				{intro}
-				{hilight}
-				{detail}
-			</p>
-		);
-	}
-
 	getContent() {
 		try {
 			return (
@@ -85,16 +54,7 @@ class Summary extends Component {
 					{this.state.view.warnings.map(i => (
 						<CSStatus key={i} status={CSStatus.status.WARNING} message={i}/>
 					))}
-					<div className='Summaries'>
-						<p className='SummaryItem FdbkContainerHighlight'>
-							<span className="SummaryItemKeyNumeric FdbkContainerHighlightKeyNumeric">{this.state.view.num_entries}</span>entries
-						</p>
-						{this.state.view.summaries.map(i => {
-							if (i === null) return null;
-							// TODO: Nan warning
-							return this.getSummaryComponent(i);
-						})}
-					</div>
+					<Summaries data={this.state.view.summaries} numEntries={this.state.view.num_entries} units={this.state.view.units}/>
 					<Visualizations data={this.state.view.visualizations}/>
 					{/* Output current state for debugging: <p className='Code'>{JSON.stringify(this.state, null, 2)}</p> */}
 				</div>
