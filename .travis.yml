@@ -8,8 +8,8 @@ install:
 script:
 - npm run lint
 - npm test -- --coverage
-before_deploy:
 - npm run build
+before_deploy:
 - tar zcf webapp-build-$(git describe --tags).tar.gz build/
 deploy:
 - provider: releases

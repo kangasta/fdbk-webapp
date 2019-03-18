@@ -30,6 +30,8 @@ class DataAnalysis extends Component {
 			case 'summary':
 				if (!this.props.topic_id) throw new Error();
 				return '/get/summary/' + this.props.topic_id;
+			default:
+				throw new Error();
 			}
 		} catch(e) {/* eslint-disable-line no-empty */}
 		return null;
