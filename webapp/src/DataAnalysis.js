@@ -116,7 +116,7 @@ class DataAnalysis extends Component {
 					{this.state.view.warnings.map(i => (
 						<CSStatus key={i} status={CSStatus.status.WARNING} message={i}/>
 					))}
-					<Summaries data={this.state.view.summaries} numEntries={this.state.view.num_entries} units={this.state.view.units}/>
+					<Summaries data={this.state.view.summaries} numEntries={this.state.view.num_entries} showTitle={this.props.type === 'overview'}/>
 					<Visualizations data={this.state.view.visualizations}/>
 					{/* Output current state for debugging: <p className='Code'>{JSON.stringify(this.state, null, 2)}</p> */}
 				</div>

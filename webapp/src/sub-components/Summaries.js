@@ -7,6 +7,7 @@ import { _sToSpaces, capitalize } from '../Utils';
 class Summaries extends Component {
 	getSummaryComponent(summary_item) {
 		var intro=null, hilight=null, detail=null;
+		const title = this.props.showTitle ? <div className='FdbkContainerHighlightTitle'>{summary_item.topic_name}:</div> : null;
 
 		switch(summary_item.type) {
 		case 'last_truthy':
@@ -24,6 +25,7 @@ class Summaries extends Component {
 		}
 		return (
 			<p key={summary_item.type.toString() + summary_item.field.toString()} className='SummaryItem FdbkContainerHighlight'>
+				{title}
 				{intro}
 				{hilight}
 				{detail}
@@ -54,6 +56,7 @@ Summaries.defaultProps = {
 Summaries.propTypes = {
 	data: PropTypes.arrayOf(PropTypes.object),
 	numEntries: PropTypes.number,
+	showTitle: PropTypes.bool,
 };
 
 export default Summaries;
