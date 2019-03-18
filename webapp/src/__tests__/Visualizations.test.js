@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import Visualizations from '../Visualizations';
+import Visualizations from '../sub-components/Visualizations';
 
 describe('Visualizations', () => {
 	it('renders without crashing', () => {

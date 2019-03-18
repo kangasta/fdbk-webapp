@@ -5,7 +5,7 @@ import moment from 'moment';
 import { CSStatus, CSValidatorChanger } from 'chillisalmon';
 
 import { _sToSpaces, capitalize, checkJsonForErrors } from './Utils';
-import Visualizations from './Visualizations';
+import Visualizations from './sub-components/Visualizations';
 
 class Summary extends Component {
 	constructor(props) {
@@ -82,10 +82,10 @@ class Summary extends Component {
 			return (
 				<div className='Content'>
 					<p>{this.state.view.description}</p>
+					{this.state.view.warnings.map(i => (
+						<CSStatus key={i} status={CSStatus.status.WARNING} message={i}/>
+					))}
 					<div className='Summaries'>
-						{this.state.view.warnings.map(i => (
-							<CSStatus key={i} status={CSStatus.status.WARNING} message={i}/>
-						))}
 						<p className='SummaryItem FdbkContainerHighlight'>
 							<span className="SummaryItemKeyNumeric FdbkContainerHighlightKeyNumeric">{this.state.view.num_entries}</span>entries
 						</p>

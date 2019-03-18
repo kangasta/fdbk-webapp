@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { CSValidatorChanger } from 'chillisalmon';
 
 import { checkJsonForErrors } from './Utils';
-import Visualizations from './Visualizations';
+import Visualizations from './sub-components/Visualizations';
 
 class Comparison extends Component {
 	constructor(props) {

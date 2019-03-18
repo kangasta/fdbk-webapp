@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import ChartWrapper from './ChartWrapper';
-import { _sToSpaces, capitalize } from './Utils';
+import ChartWrapper from '../ChartWrapper';
+import { _sToSpaces, capitalize } from '../Utils';
 
 //import './style/Visualizations.css';
 
