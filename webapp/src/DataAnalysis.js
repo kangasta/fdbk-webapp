@@ -18,22 +18,6 @@ class DataAnalysis extends Component {
 		};
 	}
 
-	componentDidMount() {
-		if (!this.getUrl()) {
-			this.setState({view: {error: 'DataAnalysis created with invalid parameters'}});
-			return;
-		}
-		this.setState({
-			updateIntervalId: setInterval(()=>{
-				this.update();
-			}, this.props.update_interval)});
-		return this.update();
-	}
-
-	componentWillUnmount() {
-		clearInterval(this.state.updateIntervalId);
-	}
-
 	getUrl() {
 		try {
 			const type = this.props.type;
@@ -51,7 +35,43 @@ class DataAnalysis extends Component {
 		return null;
 	}
 
+	validate() {
+		const valid = !!this.getUrl();
+
+		if (!valid) {
+			this.setState({view: {error: 'DataAnalysis created with invalid parameters'}});
+		}
+
+		return valid;
+	}
+
+	componentDidMount() {
+		if (!this.validate()) return;
+		this.setState({
+			updateIntervalId: setInterval(()=>{
+				this.update();
+			}, this.props.update_interval)});
+		return this.update();
+	}
+
+	componentWillUnmount() {
+		clearInterval(this.state.updateIntervalId);
+	}
+
+	componentDidUpdate(prevProps) {
+		const newType = prevProps.type !== this.props.type;
+		if (newType) {
+			this.setState({
+				'view': {
+					'loading': 'Waiting for ' + this.props.type + ' data'
+				}
+			});
+			return this.update();
+		}
+	}
+
 	update() {
+		if (!this.validate()) return;
 		return fetch(this.getUrl())
 			.then((response) => response.json())
 			.then(checkJsonForErrors)
