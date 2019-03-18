@@ -4,11 +4,10 @@ import FdbkContainer from './FdbkContainer';
 import Form from './Form';
 import Logo from './Logo';
 import NavBar from './NavBar';
-import Summary from './Summary';
+import DataAnalysis from './DataAnalysis';
 import TopicList from './TopicList';
 
 import './style/App.css';
-import Comparison from './Comparison';
 
 class App extends Component {
 	constructor(props) {
@@ -34,7 +33,7 @@ class App extends Component {
 			);
 		} else if (this.state.view.hasOwnProperty('summary')) {
 			return (
-				<Summary topic_id={this.state.view.summary}/>
+				<DataAnalysis type='summary' topic_id={this.state.view.summary}/>
 			);
 		} else if (this.state.view.hasOwnProperty('summaries')) {
 			return (
@@ -42,7 +41,11 @@ class App extends Component {
 			);
 		} else if (this.state.view.hasOwnProperty('comparison')) {
 			return (
-				<Comparison topic_ids={this.state.view.comparison}/>
+				<DataAnalysis type='comparison' topic_ids={this.state.view.comparison}/>
+			);
+		} else if (this.state.view.hasOwnProperty('overview')) {
+			return (
+				<DataAnalysis type='overview'/>
 			);
 		} else if (this.state.view.hasOwnProperty('select_for_comparison')) {
 			return (
@@ -86,6 +89,13 @@ class App extends Component {
 				},
 				'url': match[0]
 			};
+		} else if (match = url.match(/#\/overview/)) {
+			return {
+				'view': {
+					'overview': null
+				},
+				'url': match[0]
+			};
 		} else if (match = url.match(/#\/comparison\/([0-9a-f-,]*)/)) {
 			return {
 				'view': {
@@ -119,6 +129,7 @@ class App extends Component {
 
 	render() {
 		const navbar_links = [
+			{target: '/#/overview', text: 'Overview'},
 			{target: '/#/summaries', text: 'Summaries'},
 			{target: '/#/forms', text: 'Forms'},
 			{target: '/#/select-for-comparison', text: 'Comparison'},

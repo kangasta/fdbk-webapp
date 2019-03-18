@@ -7,20 +7,20 @@ import { checkJsonForErrors } from './Utils';
 import Visualizations from './sub-components/Visualizations';
 import Summaries from './sub-components/Summaries';
 
-class Summary extends Component {
+class DataAnalysis extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			'view': {
-				'loading': 'Waiting for feedback topic data'
+				'loading': 'Waiting for ' + props.type + ' data'
 			}
 		};
 	}
 
 	componentDidMount() {
-		if (!this.props.topic_id) {
-			this.setState({view: {error: 'Summary created without topic'}});
+		if (!this.getUrl()) {
+			this.setState({view: {error: 'DataAnalysis created with invalid parameters'}});
 			return;
 		}
 		this.setState({
@@ -34,8 +34,25 @@ class Summary extends Component {
 		clearInterval(this.state.updateIntervalId);
 	}
 
+	getUrl() {
+		try {
+			const type = this.props.type;
+			switch(type) {
+			case 'comparison':
+				if (this.props.topic_ids.length < 1) throw new Error();
+				return '/get/comparison/' + this.props.topic_ids.join(',');
+			case 'overview':
+				return '/get/overview';
+			case 'summary':
+				if (!this.props.topic_id) throw new Error();
+				return '/get/summary/' + this.props.topic_id;
+			}
+		} catch(e) {/* eslint-disable-line no-empty */}
+		return null;
+	}
+
 	update() {
-		return fetch('/get/summary/' + this.props.topic_id)
+		return fetch(this.getUrl())
 			.then((response) => response.json())
 			.then(checkJsonForErrors)
 			.then((response_json) => {
@@ -46,11 +63,36 @@ class Summary extends Component {
 			});
 	}
 
+	getTopicsString() {
+		try {
+			const topics = this.state.view.topic_names;
+			if (topics.length === 1) return topics[0];
+			if (topics.length === 2) return topics.join(' and ');
+			return topics.slice(0,-1).join(', ') + ', and ' + topics.slice(-1);
+		} catch(e) {
+			return null;
+		}
+	}
+
+	getDescription() {
+		const type = this.props.type;
+		switch(type) {
+		case 'comparison':
+			return 'Comparing topics ' + this.getTopicsString();
+		case 'overview':
+			return 'Overviewing topics ' + this.getTopicsString();
+		case 'summary':
+			return this.state.view.description;
+		default:
+			return null;
+		}
+	}
+
 	getContent() {
 		try {
 			return (
 				<div className='Content'>
-					<p>{this.state.view.description}</p>
+					<p>{this.getDescription()}</p>
 					{this.state.view.warnings.map(i => (
 						<CSStatus key={i} status={CSStatus.status.WARNING} message={i}/>
 					))}
@@ -65,12 +107,15 @@ class Summary extends Component {
 	}
 
 	getTitle() {
-		return this.state.view.topic || this.props.topic_name;
+		const plural = ['comparison', 'overview'].includes(this.props.type) ? 's' : '';
+		const defaultTitle = 'Topic' + plural + ' ' + this.props.type;
+
+		return this.state.view.topic || defaultTitle;
 	}
 
 	render() {
 		return (
-			<div className='Summary'>
+			<div className='DataAnalysis'>
 				<h1>{this.getTitle()}</h1>
 				<CSValidatorChanger error={this.state.view.error} loading={this.state.view.loading}>
 					{this.getContent()}
@@ -81,16 +126,16 @@ class Summary extends Component {
 }
 
 // TODO: This is for initial demo, please remove later
-Summary.defaultProps = {
-	topic_id: '',
-	topic_name: 'Summary',
+DataAnalysis.defaultProps = {
+	type: 'summary',
 	update_interval: 30e3,
 };
 
-Summary.propTypes = {
+DataAnalysis.propTypes = {
 	topic_id: PropTypes.string,
-	topic_name: PropTypes.string,
+	topic_ids: PropTypes.arrayOf(PropTypes.string),
+	type: PropTypes.oneOf(['comparison', 'overview', 'summary']),
 	update_interval: PropTypes.number,
 };
 
-export default Summary;
+export default DataAnalysis;
