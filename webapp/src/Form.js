@@ -39,7 +39,7 @@ class Form extends Component {
 			this.setState({view: {error: 'Form created without topic'}});
 			return;
 		}
-		return fetch('/get/topic/' + this.props.topic_id)
+		return fetch('/topics/' + this.props.topic_id)
 			.then((response) => response.json())
 			.then(checkJsonForErrors)
 			.then((response_json) => {
@@ -82,7 +82,7 @@ class Form extends Component {
 
 	submitOnClick(/*event*/) {
 		const token_parameter = this.state.token ? '?token=' + this.state.token : '';
-		const url = '/add/data/' + this.state.view.id + token_parameter;
+		const url = '/topics/' + this.state.view.id + '/data' + token_parameter;
 
 		this.setState({
 			'view': {

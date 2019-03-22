@@ -22,7 +22,7 @@ class TopicList extends Component {
 	}
 
 	componentDidMount() {
-		return fetch('/get/topics')
+		return fetch('/topics')
 			.then((response) => response.json())
 			.then(checkJsonForErrors)
 			.then((response_json) => {

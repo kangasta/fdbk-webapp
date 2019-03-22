@@ -45,7 +45,7 @@ describe('Form',() => {
 			});
 			wrapper.find('.Submit button').simulate('click');
 			wrapper.update();
-			expect(global.fetch).toBeCalledWith('/add/data/' + topic_id, {
+			expect(global.fetch).toBeCalledWith('/topics/' + topic_id + '/data', {
 				'body': JSON.stringify({Number1: 3,Number2: 3}),
 				'headers': {
 					'Content-Type': 'application/json'

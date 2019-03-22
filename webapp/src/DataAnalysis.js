@@ -24,12 +24,12 @@ class DataAnalysis extends Component {
 			switch(type) {
 			case 'comparison':
 				if (this.props.topic_ids.length < 1) throw new Error();
-				return '/get/comparison/' + this.props.topic_ids.join(',');
+				return '/comparison/' + this.props.topic_ids.join(',');
 			case 'overview':
-				return '/get/overview';
+				return '/overview';
 			case 'summary':
 				if (!this.props.topic_id) throw new Error();
-				return '/get/summary/' + this.props.topic_id;
+				return '/topics/' + this.props.topic_id + '/summary';
 			default:
 				throw new Error();
 			}

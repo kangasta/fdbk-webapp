@@ -1,0 +1,84 @@
+{
+	"description": "Taste review for the APA served in todays tasting.",
+	"num_entries": 5,
+	"summaries": [
+		{
+			"field": "stars",
+			"topic_name": "APA",
+			"type": "average",
+			"unit": "stars",
+			"value": 3.0
+		},
+		{
+			"field": "stars",
+			"topic_name": "APA",
+			"type": "latest",
+			"unit": "stars",
+			"value": 5
+		},
+		{
+			"field": "stars",
+			"topic_name": "APA",
+			"type": "last_truthy",
+			"unit": "stars",
+			"value": "2019-03-15T15:43:33.245944Z"
+		},
+		null
+	],
+	"topic": "APA",
+	"units": [
+		{
+			"field": "text",
+			"unit": "text"
+		},
+		{
+			"field": "stars",
+			"unit": "stars"
+		}
+	],
+	"visualizations": [
+		{
+			"data": [
+				1,
+				1,
+				1,
+				1,
+				1
+			],
+			"field": "stars",
+			"labels": [
+				1,
+				2,
+				3,
+				4,
+				5
+			],
+			"topic_name": "APA",
+			"type": "horseshoe",
+			"unit": "stars"
+		},
+		{
+			"data": [
+				1,
+				2,
+				3,
+				4,
+				5
+			],
+			"field": "stars",
+			"labels": [
+				"2019-03-15T15:43:32.853251Z",
+				"2019-03-15T15:43:32.936041Z",
+				"2019-03-15T15:43:33.033695Z",
+				"2019-03-15T15:43:33.137298Z",
+				"2019-03-15T15:43:33.245944Z"
+			],
+			"topic_name": "APA",
+			"type": "line",
+			"unit": "stars"
+		}
+	],
+	"warnings": [
+		"The requested method 'not_supported' is not supported."
+	]
+}
