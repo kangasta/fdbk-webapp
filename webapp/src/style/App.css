@@ -10,13 +10,10 @@ font-family: 'Source Code Pro', monospace;
 */
 
 .App {
+	box-sizing: border-box;
 	font-family: 'Quicksand', sans-serif;
-}
-
-.Center {
-	left: 50%;
-	position: absolute;
-	transform: translateX(-50%);
+	min-height: 100vh;
+	position: relative;
 }
 
 .Background {
@@ -27,6 +24,10 @@ font-family: 'Source Code Pro', monospace;
 	top: 0;
 	width: 100vw;
 	z-index: -100;
+}
+
+.WhiteSpace {
+	height: 2.5em;
 }
 
 .Link {

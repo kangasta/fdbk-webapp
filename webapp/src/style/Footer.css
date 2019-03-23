@@ -1,0 +1,29 @@
+.Footer {
+	background: #444;
+	bottom: 0;
+	color: #eee;
+	font-size: 1rem;
+	left: 0;
+	line-height: 2em;
+	margin: 0;
+	margin-top: 4rem;
+	min-height: 2em;
+	position: absolute;
+	right: 0;
+	text-align: center;
+}
+
+a {
+	color: currentColor;
+	text-decoration: none;
+	margin: 0 1em;
+}
+
+a:visited {
+	color: currentColor;
+}
+
+a:hover {
+	color: currentColor;
+	text-decoration: underline;
+}
