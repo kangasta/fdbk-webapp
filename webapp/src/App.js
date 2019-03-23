@@ -8,6 +8,7 @@ import DataAnalysis from './DataAnalysis';
 import TopicList from './TopicList';
 
 import './style/App.css';
+import Footer from './Footer';
 
 class App extends Component {
 	constructor(props) {
@@ -138,11 +139,11 @@ class App extends Component {
 		return (
 			<div className='App'>
 				<NavBar links={navbar_links} navigate={this.navigate} title={<Logo/>}/>
-				<div className='Center'>
-					<FdbkContainer navigate={this.navigate}>
-						{this.getActiveView()}
-					</FdbkContainer>
-				</div>
+				<FdbkContainer navigate={this.navigate}>
+					{this.getActiveView()}
+				</FdbkContainer>
+				<div className='WhiteSpace'/>
+				<Footer/>
 				<div className='Background'/>
 			</div>
 		);
