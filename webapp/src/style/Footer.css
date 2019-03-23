@@ -6,7 +6,6 @@
 	left: 0;
 	line-height: 2em;
 	margin: 0;
-	margin-top: 4rem;
 	min-height: 2em;
 	position: absolute;
 	right: 0;
@@ -15,8 +14,9 @@
 
 a {
 	color: currentColor;
-	text-decoration: none;
+	display: inline-block;
 	margin: 0 1em;
+	text-decoration: none;
 }
 
 a:visited {
